@@ -5,19 +5,39 @@ export default function Home() {
     <main className="min-h-screen bg-white text-gray-900 flex flex-col items-center justify-center px-6 py-12">
       <header className="text-center max-w-3xl">   
         <div className="flex justify-center">
-          <img
+          {/* <img
             src="/logo.PNG"
             alt="Logo NEEDINE"
             className="w-48 h-48 md:w-64 md:h-64 object-contain mb-6"
+          />*/}
+          <Image
+            src="/logo.PNG"
+            alt="Logo NEEDINE"
+            width={284}
+            height={284}
+            className="object-contain mb-6"
           />
+
+          
         </div>
         <div className="relative w-full max-w-4xl h-[300px] md:h-[400px] mb-8 rounded-xl overflow-hidden shadow-lg bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
           <div className="absolute inset-0 bg-black/40 z-10" />
+          {/*  
           <img
             src="/automation-illustration.png"
             alt="Automatización inteligente"
             className="absolute inset-0 w-full h-full object-cover opacity-40"
           />
+          */}
+          <div className="absolute inset-0 opacity-40">
+            <Image
+              src="/automation-illustration.png"
+              alt="Automatización inteligente"
+              fill
+              style={{ objectFit: 'cover' }}
+              priority={true}
+            />
+          </div>
           <div className="relative z-20 h-full flex flex-col items-center justify-center px-6 text-center">
             <h2 className="text-white text-2xl md:text-4xl font-semibold leading-tight drop-shadow-md">
               Transformamos tu empresa <br />
@@ -33,7 +53,7 @@ export default function Home() {
         </p>
       </header>
 
-      
+
 
       <section className="mt-24 max-w-4xl text-center" id="services">
         <h2 className="text-2xl font-semibold mb-4">¿Qué hacemos?</h2>
