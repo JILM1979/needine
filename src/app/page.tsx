@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Chat from "./components/Chat";
+
 
 export default function Home() {
   return (
@@ -53,7 +55,7 @@ export default function Home() {
         </p>
       </header>
 
-
+      <Chat />
 
       <section className="mt-24 max-w-4xl text-center" id="services">
         <h2 className="text-2xl font-semibold mb-4">¿Qué hacemos?</h2>
