@@ -25,7 +25,7 @@ export async function sendEmail({
 
     await transporter.sendMail({
       from: `"Formulario NEEDINE" <${process.env.SMTP_USER}>`,
-      to: 'ji@needine.com',
+      to: 'info@needine.com',
       subject: 'Nuevo mensaje de contacto - NEEDINE',
       html: `
         <p><strong>Nombre:</strong> ${name}</p>
