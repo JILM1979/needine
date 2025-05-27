@@ -1,8 +1,30 @@
+'use client';
+
+import { useState } from 'react';
+import { sendEmail } from './actions/sendEmail'; // Ajusta el path si es necesario
 import Image from "next/image";
 import Chat from "./components/Chat";
 
 
 export default function Home() {
+  
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [status, setStatus] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('Enviando...');
+
+    const res = await sendEmail(formData);
+
+    if (res.success) {
+      setStatus('Mensaje enviado correctamente.');
+      setFormData({ name: '', email: '', message: '' });
+    } else {
+      setStatus('Error al enviar el mensaje.');
+    }
+  };
+
   return (
     <main className="min-h-screen bg-white text-gray-900 flex flex-col items-center justify-center px-6 py-12">
       <header className="text-center max-w-3xl">   
@@ -105,6 +127,50 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <section className="mt-24 max-w-2xl w-full" id="contact">
+        <h2 className="text-2xl font-semibold mb-4 text-center">Contáctanos</h2>
+        <p className="text-center text-gray-600 mb-6">
+          ¿Tienes un proyecto en mente o necesitas más información? Escríbenos.
+        </p>
+        <form onSubmit={handleSubmit} className="space-y-4 bg-gray-50 p-6 rounded-xl shadow-md">
+          <input
+            type="text"
+            name="name"
+            placeholder="Nombre"
+            required
+            className="w-full border border-gray-300 rounded-md px-4 py-2"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Correo electrónico"
+            required
+            className="w-full border border-gray-300 rounded-md px-4 py-2"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          />
+          <textarea
+            name="message"
+            placeholder="Tu mensaje"
+            rows={4}
+            required
+            className="w-full border border-gray-300 rounded-md px-4 py-2"
+            value={formData.message}
+            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+          />
+          <button
+            type="submit"
+            className="w-full bg-gray-900 text-white py-2 rounded-md hover:bg-gray-800 transition"
+          >
+            Enviar mensaje
+          </button>
+          {status && <p className="text-sm text-center mt-2 text-gray-600">{status}</p>}
+        </form>
+      </section>
+
 
       <footer className="mt-24 text-center text-gray-500 text-sm" id="contact">
         <p>© 2025 NEEDINE — Innovación en automatización con IA</p>
