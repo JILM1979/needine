@@ -68,7 +68,7 @@ export default function Home() {
               con flujos inteligentes y automatizados
             </h2>
             <p className="text-gray-200 text-sm mt-4 max-w-xl">
-              Combinamos tecnología, IA y visión estratégica para automatizar desde lo simple hasta lo impensable.
+              Detectamos cuellos de botella y tareas repetitivas en tus procesos. Luego diseñamos e implementamos flujos automáticos con n8n e Inteligencia Artificial para que tu equipo gane tiempo y eficiencia.
             </p>
           </div>
         </div>
@@ -78,51 +78,79 @@ export default function Home() {
       </header>
 
       <Chat />
-
-      <section className="mt-24 max-w-4xl text-center" id="services">
-        <h2 className="text-2xl font-semibold mb-4">¿Qué hacemos?</h2>
-        <p className="text-gray-700 mb-6">
-          Combinamos tecnología de automatización con modelos avanzados de IA para ofrecer:
+      
+      <section className="mt-24 max-w-4xl mx-auto text-center px-4" id="services">
+        <h2 className="text-3xl font-bold mb-4 text-gray-900">¿Qué hacemos?</h2>
+        <p className="text-gray-700 text-lg mb-6">
+          Identificamos procesos repetitivos, manuales o lentos en tu organización y los transformamos en flujos inteligentes y autónomos mediante automatización avanzada e inteligencia artificial.
         </p>
-        <ul className="text-left space-y-3 text-gray-800">
-          <li>✅ Automatización de procesos de negocio (BPA)</li>
-          <li>✅ Integraciones personalizadas con herramientas internas</li>
-          <li>✅ Agentes inteligentes para soporte, análisis y gestión de datos</li>
-          <li>✅ Flujos diseñados con n8n, Zapier, Make, APIs y más</li>
+        <ul className="text-left space-y-3 text-gray-800 text-base">
+          <li>✅ Reducimos tiempos operativos y eliminamos errores humanos</li>
+          <li>✅ Liberamos a tu equipo de tareas que no aportan valor</li>
+          <li>✅ Hacemos que tus procesos funcionen en piloto automático, las 24 horas</li>
         </ul>
       </section>
 
-      <section className="mt-24 max-w-4xl text-center">
-        <h2 className="text-2xl font-semibold mb-4">
-          Inteligencia Artificial aplicada al lenguaje
-        </h2>
-        <p className="text-gray-700 mb-6">
-          El <strong>Procesamiento de Lenguaje Natural (NLP)</strong> permite a las máquinas comprender, interpretar y generar lenguaje humano con precisión. En un mundo donde los datos textuales son omnipresentes, el NLP se convierte en una herramienta estratégica para las organizaciones.
+      <section className="mt-24 max-w-4xl mx-auto text-center px-4">
+        <h2 className="text-3xl font-bold mb-4 text-gray-900">¿Qué problema resolvemos?</h2>
+        <p className="text-gray-700 text-lg mb-6">
+          Muchas empresas pierden recursos valiosos cada día por seguir operando con procesos ineficientes, manuales y desconectados entre herramientas.
+        </p>
+        <ul className="text-left space-y-3 text-gray-800 text-base">
+          <li>✅ Tiempo desperdiciado en tareas repetitivas y traslado de datos entre sistemas</li>
+          <li>✅ Equipos saturados y desmotivados por trabajos operativos que pueden automatizarse</li>
+          <li>✅ Procesos propensos a errores y sin trazabilidad ni escalabilidad</li>
+          <li className="font-semibold text-gray-700">
+            ⏱️ Todo esto se traduce en costes innecesarios y una pérdida directa de competitividad.
+          </li>
+        </ul>
+        <p className="text-gray-700 text-lg mt-6">
+          <strong>Transformamos esa realidad con soluciones personalizadas de automatización e IA.</strong> Tu negocio se vuelve más ágil, más rentable y más inteligente.
+        </p>
+      </section>
+
+      <section className="mt-24 max-w-4xl mx-auto text-center px-4">
+        <h2 className="text-3xl font-bold mb-4 text-gray-900">¿Cómo lo hacemos?</h2>
+        <p className="text-gray-700 text-lg mb-6">
+          Combinamos tecnología de automatización visual (como n8n) con modelos de IA para diseñar flujos totalmente personalizados que se adaptan a tus herramientas y forma de trabajar.
+        </p>
+        <ul className="text-left space-y-3 text-gray-800 text-base">
+          <li>✅ Automatización de procesos críticos de negocio (BPA)</li>
+          <li>✅ Integración con CRMs, ERPs, hojas de cálculo, APIs y más</li>
+          <li>✅ Agentes inteligentes para análisis, soporte, clasificación y más</li>
+          <li>✅ Soluciones basadas en herramientas como n8n, Zapier, Make y sistemas propios</li>
+        </ul>
+      </section>
+
+      <section className="mt-24 max-w-4xl mx-auto text-center px-4">
+        <h2 className="text-3xl font-bold mb-4 text-gray-900">IA aplicada al lenguaje</h2>
+        <p className="text-gray-700 text-lg mb-6">
+          Gracias al <strong>Procesamiento de Lenguaje Natural (NLP)</strong>, implementamos soluciones capaces de entender, generar y clasificar información textual de forma automática y contextual.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left text-gray-800">
-          <div className="bg-gray-50 p-6 rounded-xl shadow-sm">
-            <h3 className="font-semibold mb-2">📄 Automatización de documentos</h3>
+          <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm hover:shadow-md transition">
+            <h3 className="font-semibold text-lg mb-2">📄 Automatización documental</h3>
             <p className="text-sm">
-              Extraemos y analizamos información de correos, contratos y PDFs con modelos de lenguaje para reducir errores y tiempos operativos.
+              Extraemos y procesamos datos desde emails, contratos y PDFs usando IA para ahorrar tiempo y minimizar errores.
             </p>
           </div>
-          <div className="bg-gray-50 p-6 rounded-xl shadow-sm">
-            <h3 className="font-semibold mb-2">🤖 Chatbots inteligentes</h3>
+          <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm hover:shadow-md transition">
+            <h3 className="font-semibold text-lg mb-2">🤖 Chatbots contextuales</h3>
             <p className="text-sm">
-              Creamos asistentes virtuales capaces de entender el contexto, resolver consultas internas o de clientes, y aprender con el tiempo.
+              Creamos asistentes virtuales que entienden consultas, se integran con tus datos y evolucionan con el tiempo.
             </p>
           </div>
-          <div className="bg-gray-50 p-6 rounded-xl shadow-sm">
-            <h3 className="font-semibold mb-2">📊 Análisis de sentimiento</h3>
+          <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm hover:shadow-md transition">
+            <h3 className="font-semibold text-lg mb-2">📊 Análisis de sentimiento</h3>
             <p className="text-sm">
-              Aplicamos modelos para evaluar la percepción del cliente en redes sociales, encuestas o soporte técnico.
+              Analizamos opiniones de clientes en redes, encuestas o soporte para tomar decisiones basadas en datos reales.
             </p>
           </div>
-          <div className="bg-gray-50 p-6 rounded-xl shadow-sm">
-            <h3 className="font-semibold mb-2">🌐 Clasificación y enrutamiento inteligente</h3>
+          <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm hover:shadow-md transition">
+            <h3 className="font-semibold text-lg mb-2">🌐 Clasificación inteligente</h3>
             <p className="text-sm">
-              Organizamos tickets, correos o consultas automáticamente según su contenido, idioma o intención.
+              Enrutamos automáticamente emails, tickets o mensajes por intención, idioma o urgencia con precisión y escala.
             </p>
           </div>
         </div>
