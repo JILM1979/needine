@@ -28,6 +28,10 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white text-gray-900 flex flex-col items-center justify-center px-6 py-12">
       <header className="text-center max-w-3xl">   
+        {/* Mensaje informativo al visitante */}
+        <div className="bg-yellow-100 text-yellow-800 text-sm md:text-base px-4 py-2 rounded-md shadow mb-4 border border-yellow-300">
+          <strong>Aviso importante:</strong> Nos encontramos en la etapa inicial de lanzamiento de Needine. Agradecemos su interés y comprensión mientras finalizamos los preparativos para ofrecer nuestros servicios.
+        </div>
         <div className="flex justify-center">
           {/* <img
             src="/logo.PNG"
