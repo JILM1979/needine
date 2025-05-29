@@ -1,14 +1,17 @@
 // app/private/page.tsx
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+//import { authOptions } from "../ /api/auth/[...nextauth]/route";
+import { authOptions } from "../../lib/authOptions";
 import { redirect } from "next/navigation";
 import LogoutButton from "../components/LogoutButton";
+import { allowedUsers } from "@/lib/allowedUsers";
 
 export default async function PrivatePage() {
   const session = await getServerSession(authOptions);
 
-  if (!session) {
-    redirect("/"); // o muestra una página de error si prefieres
+  
+  if (!session || !session.user || !allowedUsers.includes(session.user.name ?? "")) {
+    return redirect("/");
   }
 
   return (
