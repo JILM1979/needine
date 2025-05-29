@@ -36,12 +36,6 @@ export default function Home() {
           <strong>Aviso importante:</strong> Nos encontramos en la etapa inicial de lanzamiento de Needine. Agradecemos su interés y comprensión mientras finalizamos los preparativos para ofrecer nuestros servicios.
         </div>
 
-        <a
-          href="/private"
-          className="inline-block px-6 py-3 text-white bg-gray-800 hover:bg-gray-700 rounded-lg shadow-md transition mt-6"
-        >
-          Acceso privado
-        </a>
          {/* Login/Logout según sesión */}
         <div className="mt-4">
           {session ? (
@@ -53,7 +47,15 @@ export default function Home() {
               >
                 Cerrar sesión
               </button>
+        
+              <a
+                href="/private"
+                className="inline-block px-6 py-3 text-white bg-gray-800 hover:bg-gray-700 rounded-lg shadow-md transition mt-6"
+              >
+                Acceso parte privada
+              </a>
             </div>
+        
           ) : (
             <button
               onClick={() => signIn()}
@@ -63,6 +65,8 @@ export default function Home() {
             </button>
           )}
         </div>
+        
+
         <div className="flex justify-center">
           {/* <img
             src="/logo.PNG"
