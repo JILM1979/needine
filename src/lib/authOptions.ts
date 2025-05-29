@@ -1,6 +1,7 @@
 // src/lib/authOptions.ts
 import GitHubProvider from "next-auth/providers/github";
 import { NextAuthOptions } from "next-auth";
+import { type GitHubProfile } from "@/types/github-profile";
 
 /*
 export const authOptions: NextAuthOptions = {
@@ -38,13 +39,14 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, profile }) {
-      if (profile) {
-        token.username = (profile as any).login;
+      if (profile && "login" in profile) {
+        const githubProfile = profile as GitHubProfile;
+        token.username = githubProfile.login;
       }
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
+      if (session.user && token.username) {
         session.user.name = token.username as string;
       }
       return session;
