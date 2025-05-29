@@ -1,18 +1,23 @@
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/authOptions"
+// app/private/page.tsx
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import LogoutButton from "../components/LogoutButton";
 
 export default async function PrivatePage() {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    redirect("/api/auth/signin"); // Redirige al login
+    redirect("/"); // o muestra una página de error si prefieres
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-4">
-      <h1 className="text-3xl font-semibold text-gray-800 mb-4">Zona Privada</h1>
-      <p className="text-gray-600">Bienvenido, {session.user?.name}.</p>
+    <main className="p-8">
+      <LogoutButton />
+      <h1 className="text-2xl font-bold mb-4">Zona Privada</h1>
+      <p>Bienvenido {session.user?.name}</p>
     </main>
   );
 }
+
+
