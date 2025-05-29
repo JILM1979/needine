@@ -50,9 +50,9 @@ export default function Home() {
           />          
         </div>
          {/* Login/Logout según sesión */}
-        <div className="mt-4">
+        <div className="mt-4 flex justify-end">
           {session ? (
-            <div className="flex flex-col items-center space-y-2">
+            <div className="flex flex-col items-end space-y-2">
               <p className="text-sm text-gray-700">Bienvenido, {session.user?.name}</p>
               <button
                 onClick={() => signOut()}
@@ -60,15 +60,14 @@ export default function Home() {
               >
                 Cerrar sesión
               </button>
-        
+
               <a
                 href="/private"
-                className="inline-block px-6 py-3 text-white bg-gray-800 hover:bg-gray-700 rounded-lg shadow-md transition mt-6"
+                className="inline-block px-6 py-3 text-white bg-gray-800 hover:bg-gray-700 rounded-lg shadow-md transition mt-2"
               >
                 Acceso parte privada
               </a>
             </div>
-        
           ) : (
             <button
               onClick={() => signIn()}
@@ -77,8 +76,7 @@ export default function Home() {
               Iniciar sesión
             </button>
           )}
-        </div>
-        
+        </div>      
 
 
         <div className="relative w-full max-w-4xl h-[300px] md:h-[400px] mb-8 rounded-xl overflow-hidden shadow-lg bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
