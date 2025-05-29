@@ -35,21 +35,8 @@ export default function Home() {
         <div className="bg-yellow-100 text-yellow-800 text-sm md:text-base px-4 py-2 rounded-md shadow mb-4 border border-yellow-300">
           <strong>Aviso importante:</strong> Nos encontramos en la etapa inicial de lanzamiento de Needine. Agradecemos su interés y comprensión mientras finalizamos los preparativos para ofrecer nuestros servicios.
         </div>
-        <div className="flex justify-center">
-          {/* <img
-            src="/logo.PNG"
-            alt="Logo NEEDINE"
-            className="w-48 h-48 md:w-64 md:h-64 object-contain mb-6"
-          />*/}
-          <Image
-            src="/logo.PNG"
-            alt="Logo NEEDINE"
-            width={284}
-            height={284}
-            className="object-contain mb-6"
-          />          
-        </div>
-         {/* Login/Logout según sesión */}
+        
+        {/* Login/Logout según sesión */}
         <div className="mt-4 flex justify-end">
           {session ? (
             <div className="flex flex-col items-end space-y-2">
@@ -77,8 +64,20 @@ export default function Home() {
             </button>
           )}
         </div>      
-
-
+        <div className="flex justify-center">
+          {/* <img
+            src="/logo.PNG"
+            alt="Logo NEEDINE"
+            className="w-48 h-48 md:w-64 md:h-64 object-contain mb-6"
+          />*/}
+          <Image
+            src="/logo.PNG"
+            alt="Logo NEEDINE"
+            width={284}
+            height={284}
+            className="object-contain mb-6"
+          />          
+        </div>
         <div className="relative w-full max-w-4xl h-[300px] md:h-[400px] mb-8 rounded-xl overflow-hidden shadow-lg bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
           <div className="absolute inset-0 bg-black/40 z-10" />
           {/*  
