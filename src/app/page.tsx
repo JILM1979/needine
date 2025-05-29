@@ -1,12 +1,15 @@
 'use client';
 
+import { signIn, signOut, useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { sendEmail } from './actions/sendEmail'; // Ajusta el path si es necesario
 import Image from "next/image";
 import Chat from "./components/Chat";
 
 
+
 export default function Home() {
+  const { data: session } = useSession();
   
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState('');
@@ -31,6 +34,34 @@ export default function Home() {
         {/* Mensaje informativo al visitante */}
         <div className="bg-yellow-100 text-yellow-800 text-sm md:text-base px-4 py-2 rounded-md shadow mb-4 border border-yellow-300">
           <strong>Aviso importante:</strong> Nos encontramos en la etapa inicial de lanzamiento de Needine. Agradecemos su interés y comprensión mientras finalizamos los preparativos para ofrecer nuestros servicios.
+        </div>
+
+        <a
+          href="/private"
+          className="inline-block px-6 py-3 text-white bg-gray-800 hover:bg-gray-700 rounded-lg shadow-md transition mt-6"
+        >
+          Acceso privado
+        </a>
+         {/* Login/Logout según sesión */}
+        <div className="mt-4">
+          {session ? (
+            <div className="flex flex-col items-center space-y-2">
+              <p className="text-sm text-gray-700">Bienvenido, {session.user?.name}</p>
+              <button
+                onClick={() => signOut()}
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md"
+              >
+                Cerrar sesión
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => signIn()}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+            >
+              Iniciar sesión
+            </button>
+          )}
         </div>
         <div className="flex justify-center">
           {/* <img
@@ -80,6 +111,7 @@ export default function Home() {
           Automatizamos procesos empresariales aplicando inteligencia artificial. Diseñamos flujos que transforman la eficiencia operativa de tu organización.
         </p>
       </header>
+      
 
       <Chat />
       
