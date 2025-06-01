@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
     });
 
     const data = await res.json();
+    console.log("data =" + data );
     return NextResponse.json({ reply: data.output || 'Respuesta no disponible.' });
   } catch (error) {
     console.error('Error al contactar n8n:', error);
