@@ -22,7 +22,7 @@ export default function ChatRAG() {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/ChatRAG', {
+      const res = await fetch('/api/Chat', {
         method: 'POST',
         body: JSON.stringify({ message: input }),
         headers: { 'Content-Type': 'application/json' },
