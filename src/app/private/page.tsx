@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import LogoutButton from "../components/LogoutButton";
 import { allowedUsers } from "@/lib/allowedUsers";
 import ChatRAG from "@/app/components/ChatRAG";
+import ChatSecretario from "@/app/components/ChatSecretario";
 
 
 export default async function PrivatePage() {
@@ -23,6 +24,8 @@ export default async function PrivatePage() {
       <p>Bienvenido {session.user?.name}</p>
 
       <ChatRAG />
+
+      <ChatSecretario />
 
     </main>
   );
