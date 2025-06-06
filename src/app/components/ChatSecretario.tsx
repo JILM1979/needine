@@ -46,7 +46,7 @@ export default function ChatSecretario() {
 
   return (
     <div className="mt-24 w-full max-w-full bg-white border rounded-xl shadow-lg p-4">
-      <h3 className="text-lg font-semibold mb-2 text-center">Asistente Virtual</h3>
+      <h3 className="text-lg font-semibold mb-2 text-center">Secretario Virtual</h3>
       <div className="h-64 overflow-y-auto mb-4 space-y-2 p-2 bg-gray-50 rounded">
         {messages.map((msg, idx) => (
           <div
@@ -55,7 +55,7 @@ export default function ChatSecretario() {
               msg.sender === 'user' ? 'ml-auto bg-blue-100' : 'mr-auto bg-gray-200'
             }`}
           >
-          <ReactMarkdown>{msg.text}</ReactMarkdown>
+            <ReactMarkdown>{msg.text}</ReactMarkdown>
           </div>
         ))}
         {/* Div vacío para scroll automático */}
