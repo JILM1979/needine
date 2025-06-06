@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 type Message = {
   sender: 'user' | 'bot';
@@ -54,7 +55,7 @@ export default function ChatSecretario() {
               msg.sender === 'user' ? 'ml-auto bg-blue-100' : 'mr-auto bg-gray-200'
             }`}
           >
-            {msg.text}
+          <ReactMarkdown>{msg.text}</ReactMarkdown>
           </div>
         ))}
         {/* Div vacío para scroll automático */}
