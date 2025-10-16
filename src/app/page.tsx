@@ -33,7 +33,7 @@ export default function Home() {
       <header className="text-center max-w-3xl">   
         {/* Mensaje informativo al visitante */}
         <div className="bg-yellow-100 text-yellow-800 text-sm md:text-base px-4 py-2 rounded-md shadow mb-4 border border-yellow-300">
-          <strong>2Aviso importante:</strong> Nos encontramos en la etapa inicial de lanzamiento de Needine. Agradecemos su interés y comprensión mientras finalizamos los preparativos para ofrecer nuestros servicios.
+          <strong>Aviso importante:</strong> Nos encontramos en la etapa inicial de lanzamiento de Needine. Agradecemos su interés y comprensión mientras finalizamos los preparativos para ofrecer nuestros servicios.
         </div>
         
         {/* Login/Logout según sesión */}
@@ -96,6 +96,8 @@ export default function Home() {
               priority={true}
             />
           </div>
+{/*      
+
           <div className="relative z-20 h-full flex flex-col items-center justify-center px-6 text-center">
             <h2 className="text-white text-2xl md:text-4xl font-semibold leading-tight drop-shadow-md">
               Transformamos tu empresa <br />
@@ -109,11 +111,27 @@ export default function Home() {
         <p className="text-lg md:text-xl text-gray-600 mb-8">
           Automatizamos procesos empresariales aplicando inteligencia artificial. Diseñamos flujos que transforman la eficiencia operativa de tu organización.
         </p>
+*/}
+        <div className="relative z-20 h-full flex flex-col items-center justify-center px-6 text-center">
+          <h2 className="text-white text-2xl md:text-4xl font-semibold leading-tight drop-shadow-md">
+            Expertos en Blockchain <br />
+            y tokenización de activos
+          </h2>
+          <p className="text-gray-200 text-sm mt-4 max-w-xl">
+            En Needine ayudamos a empresas y organizaciones a transformar sus activos en tokens digitales, 
+            creando nuevas oportunidades de inversión y liquidez con la seguridad de la tecnología blockchain.
+          </p>
+        </div>
+        </div>
+        <p className="text-lg md:text-xl text-gray-600 mb-8">
+          Ofrecemos servicios de tokenización de activos respaldados en blockchain, brindando transparencia, eficiencia 
+          y nuevas formas de crecimiento para nuestros clientes.
+        </p>
       </header>
       
 
       <Chat />
-      
+{/*      
       <section className="mt-24 max-w-5xl mx-auto text-center px-6" id="services">
         <h2 className="text-4xl font-bold text-gray-900 mb-4">¿Qué hacemos?</h2>
         <p className="text-gray-600 text-lg mb-6">
@@ -125,7 +143,7 @@ export default function Home() {
           <li>✅ Diseñamos flujos inteligentes que escalan con tu negocio</li>
         </ul>
       </section>
-{/* 
+ 
       <section className="mt-24 max-w-5xl mx-auto text-center px-6">
         <h2 className="text-4xl font-bold text-gray-900 mb-4">IA aplicada al lenguaje</h2>
         <p className="text-gray-600 text-lg mb-6">
