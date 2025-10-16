@@ -222,8 +222,8 @@ export default function Home() {
         </div>
       </section>
 
-
-
+*/}
+{/*  
       <section className="mt-24 max-w-2xl w-full" id="contact">
         <h2 className="text-2xl font-semibold mb-4 text-center">Contáctanos</h2>
         <p className="text-center text-gray-600 mb-6">
