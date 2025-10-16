@@ -60,7 +60,7 @@ export default function Home() {
               onClick={() => signIn()}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
             >
-              Iniciar sesión
+              Iniciar sesión privada
             </button>
           )}
         </div>      
@@ -114,7 +114,6 @@ export default function Home() {
 
       <Chat />
       
-
       <section className="mt-24 max-w-5xl mx-auto text-center px-6" id="services">
         <h2 className="text-4xl font-bold text-gray-900 mb-4">¿Qué hacemos?</h2>
         <p className="text-gray-600 text-lg mb-6">
@@ -124,36 +123,6 @@ export default function Home() {
           <li>✅ Reducimos el tiempo y los errores en procesos clave</li>
           <li>✅ Liberamos a tus equipos operativos de tareas repetitivas</li>
           <li>✅ Diseñamos flujos inteligentes que escalan con tu negocio</li>
-        </ul>
-      </section>
-
-      <section className="mt-24 max-w-5xl mx-auto text-center px-6">
-        <h2 className="text-4xl font-bold text-gray-900 mb-4">¿Qué problema resolvemos?</h2>
-        <p className="text-gray-600 text-lg mb-6">
-          Las empresas pierden recursos valiosos en tareas operativas que podrían estar automatizadas. Esto impacta directamente en sus costes, velocidad de respuesta y satisfacción del cliente.
-        </p>
-        <ul className="text-left text-gray-800 space-y-3 text-base max-w-2xl mx-auto">
-          <li>✅ Transferencia manual de datos entre herramientas</li>
-          <li>✅ Equipos desbordados con tareas que no escalan</li>
-          <li>✅ Procesos lentos, fragmentados y sin trazabilidad</li>
-          <li className="text-blue-700 font-semibold">➡️ Esto se traduce en costes innecesarios y menor productividad.</li>
-        </ul>
-        <p className="text-gray-600 text-lg mt-6">
-          <span className="font-medium text-gray-900">Te ayudamos a revertir eso.</span>  
-          Diseñamos soluciones de automatización e inteligencia artificial adaptadas 100% a tu realidad operativa.
-        </p>
-      </section>
-
-      <section className="mt-24 max-w-5xl mx-auto text-center px-6">
-        <h2 className="text-4xl font-bold text-gray-900 mb-4">¿Cómo lo hacemos?</h2>
-        <p className="text-gray-600 text-lg mb-6">
-          Combinamos herramientas como <span className="text-blue-600 font-medium">n8n</span>, APIs personalizadas e IA generativa para orquestar flujos automáticos robustos, auditables y escalables.
-        </p>
-        <ul className="text-left text-gray-800 space-y-3 text-base max-w-2xl mx-auto">
-          <li>✅ Automatización de procesos de negocio (BPA)</li>
-          <li>✅ Integración con tus sistemas actuales: CRM, ERP, hojas de cálculo, etc.</li>
-          <li>✅ Agentes inteligentes para análisis, clasificación y respuesta automática</li>
-          <li>✅ Desarrollo a medida con interfaces visuales y bajo código</li>
         </ul>
       </section>
 
