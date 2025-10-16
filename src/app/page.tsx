@@ -222,7 +222,7 @@ export default function Home() {
         </div>
       </section>
 
-*/}
+
 
       <section className="mt-24 max-w-2xl w-full" id="contact">
         <h2 className="text-2xl font-semibold mb-4 text-center">Contáctanos</h2>
@@ -267,9 +267,9 @@ export default function Home() {
         </form>
       </section>
 
-
+*/}
       <footer className="mt-24 text-center text-gray-500 text-sm" id="contact">
-        <p>© 2025 NEEDINE — Innovación en automatización con IA</p>
+        <p>© 2025 needine.com — Innovación en tokenizacion de activos</p>
         {/*<p>Email: contacto@needine.ai</p>*/}
       </footer>
     </main>
