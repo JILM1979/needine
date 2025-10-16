@@ -121,12 +121,40 @@ export default function Page() {
           En Needine diseñamos soluciones de tokenización personalizadas para
           empresas, instituciones y proyectos innovadores.
         </p>
-        <button
-          onClick={() => alert("Aquí puedes enlazar a un formulario de contacto o email")}
-          className="px-8 py-4 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 shadow-lg font-semibold"
+
+        <form
+          action="/api/contact"
+          method="POST"
+          className="max-w-md mx-auto flex flex-col gap-4"
         >
-          Habla con un experto
-        </button>
+          <input
+            type="text"
+            name="name"
+            placeholder="Tu nombre"
+            required
+            className="p-3 border border-gray-300 rounded-lg"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Tu correo"
+            required
+            className="p-3 border border-gray-300 rounded-lg"
+          />
+          <textarea
+            name="message"
+            placeholder="Cuéntanos sobre tu proyecto"
+            required
+            className="p-3 border border-gray-300 rounded-lg"
+            rows={4}
+          />
+          <button
+            type="submit"
+            className="px-6 py-3 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 shadow-lg font-semibold"
+          >
+            Enviar
+          </button>
+        </form>
       </section>
 
     </main>
