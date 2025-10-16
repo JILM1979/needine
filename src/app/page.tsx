@@ -129,8 +129,52 @@ export default function Home() {
         </p>
       </header>
       
-
       <Chat />
+
+      <section className="mt-24 max-w-5xl mx-auto text-center px-6">
+        <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          Tokenización de Activos en Blockchain
+        </h2>
+        <p className="text-gray-600 text-lg mb-6">
+          En <strong className="text-blue-600">Needine</strong> convertimos activos físicos y financieros en tokens digitales, 
+          abriendo nuevas oportunidades de liquidez, inversión y eficiencia para empresas e inversores.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left text-gray-800">
+
+          <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition">
+            <h3 className="font-semibold text-lg mb-2 text-gray-900">🏢 Tokenización inmobiliaria</h3>
+            <p className="text-sm text-gray-700">
+              Permite a los inversores acceder a propiedades fraccionadas mediante tokens, 
+              democratizando la inversión en bienes raíces.
+            </p>
+          </div>
+
+          <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition">
+            <h3 className="font-semibold text-lg mb-2 text-gray-900">💎 Activos financieros y commodities</h3>
+            <p className="text-sm text-gray-700">
+              Transformamos bonos, acciones, metales preciosos o materias primas en tokens que pueden negociarse con mayor liquidez y transparencia.
+            </p>
+          </div>
+
+          <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition">
+            <h3 className="font-semibold text-lg mb-2 text-gray-900">🌍 Acceso global e inclusión</h3>
+            <p className="text-sm text-gray-700">
+              La tokenización elimina barreras geográficas, permitiendo a cualquier persona invertir en activos de cualquier parte del mundo.
+            </p>
+          </div>
+
+          <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition">
+            <h3 className="font-semibold text-lg mb-2 text-gray-900">🔒 Seguridad y transparencia</h3>
+            <p className="text-sm text-gray-700">
+              Usamos contratos inteligentes y blockchain pública para garantizar trazabilidad, 
+              seguridad y confianza en cada transacción.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
 {/*      
       <section className="mt-24 max-w-5xl mx-auto text-center px-6" id="services">
         <h2 className="text-4xl font-bold text-gray-900 mb-4">¿Qué hacemos?</h2>
