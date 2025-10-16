@@ -1,8 +1,21 @@
+"use client";
+
 import React from "react";
 
 export default function Page() {
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <main>
+
+      {/* BANNER SUPERIOR */}
+      <div className="bg-blue-600 text-white text-center py-3 px-4 text-sm md:text-base">
+        🚀 Needine.com está en construcción: 
+        <span className="font-semibold"> pronto ofreceremos servicios de tokenización de activos basados en blockchain.</span>  
+        Síguenos desde ahora y sé parte del futuro de la inversión digital.
+      </div>
 
       {/* HERO */}
       <section className="relative bg-gradient-to-r from-blue-900 to-gray-900 text-white py-24 text-center">
@@ -14,14 +27,12 @@ export default function Page() {
             Needine transforma activos físicos y financieros en tokens digitales,
             abriendo nuevas oportunidades de inversión, liquidez y eficiencia.
           </p>
-          <button className="mt-8 px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-2xl shadow-lg font-semibold">
-            Descubre cómo funciona
-          </button>
+          
         </div>
       </section>
 
       {/* SERVICIOS */}
-      <section className="mt-24 max-w-5xl mx-auto text-center px-6">
+      <section id="servicios" className="mt-24 max-w-5xl mx-auto text-center px-6">
         <h2 className="text-4xl font-bold text-gray-900 mb-4">
           Nuestros Servicios
         </h2>
@@ -31,7 +42,6 @@ export default function Page() {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left text-gray-800">
-
           <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition">
             <h3 className="font-semibold text-lg mb-2 text-gray-900">🏢 Tokenización inmobiliaria</h3>
             <p className="text-sm text-gray-700">
@@ -63,12 +73,11 @@ export default function Page() {
               confianza y trazabilidad en cada operación.
             </p>
           </div>
-
         </div>
-      </section>
+          </section>
 
       {/* BENEFICIOS */}
-      <section className="mt-24 bg-gray-50 py-16 px-6">
+      <section id="beneficios" className="mt-24 bg-gray-50 py-16 px-6">
         <div className="max-w-5xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-8">
             Beneficios de la Tokenización
@@ -104,7 +113,7 @@ export default function Page() {
       </section>
 
       {/* CTA FINAL */}
-      <section className="mt-24 text-center py-16">
+      <section id="cta" className="mt-24 text-center py-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-6">
           ¿Listo para tokenizar tus activos?
         </h2>
@@ -112,7 +121,10 @@ export default function Page() {
           En Needine diseñamos soluciones de tokenización personalizadas para
           empresas, instituciones y proyectos innovadores.
         </p>
-        <button className="px-8 py-4 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 shadow-lg font-semibold">
+        <button
+          onClick={() => alert("Aquí puedes enlazar a un formulario de contacto o email")}
+          className="px-8 py-4 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 shadow-lg font-semibold"
+        >
           Habla con un experto
         </button>
       </section>
