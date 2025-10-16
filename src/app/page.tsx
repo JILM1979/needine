@@ -125,7 +125,7 @@ export default function Home() {
           <li>✅ Diseñamos flujos inteligentes que escalan con tu negocio</li>
         </ul>
       </section>
-
+{/* 
       <section className="mt-24 max-w-5xl mx-auto text-center px-6">
         <h2 className="text-4xl font-bold text-gray-900 mb-4">IA aplicada al lenguaje</h2>
         <p className="text-gray-600 text-lg mb-6">
@@ -160,7 +160,7 @@ export default function Home() {
         </div>
       </section>
 
-
+*/}
 
       <section className="mt-24 max-w-2xl w-full" id="contact">
         <h2 className="text-2xl font-semibold mb-4 text-center">Contáctanos</h2>
