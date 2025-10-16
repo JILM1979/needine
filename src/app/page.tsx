@@ -3,9 +3,7 @@
 import React from "react";
 
 export default function Page() {
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
+  
 
   return (
     <main>
