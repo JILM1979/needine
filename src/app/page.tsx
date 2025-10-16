@@ -1,143 +1,33 @@
-'use client';
+import React from "react";
 
-import { signIn, signOut, useSession } from 'next-auth/react';
-import { useState } from 'react';
-import { sendEmail } from './actions/sendEmail'; // Ajusta el path si es necesario
-import Image from "next/image";
-import Chat from "./components/Chat";
-
-
-
-export default function Home() {
-  const { data: session } = useSession();
-  
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [status, setStatus] = useState('');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('Enviando...');
-
-    const res = await sendEmail(formData);
-
-    if (res.success) {
-      setStatus('Mensaje enviado correctamente.');
-      setFormData({ name: '', email: '', message: '' });
-    } else {
-      setStatus('Error al enviar el mensaje.');
-    }
-  };
-
+export default function Page() {
   return (
-    <main className="min-h-screen bg-white text-gray-900 flex flex-col items-center justify-center px-6 py-12">
-      <header className="text-center max-w-3xl">   
-        {/* Mensaje informativo al visitante */}
-        <div className="bg-yellow-100 text-yellow-800 text-sm md:text-base px-4 py-2 rounded-md shadow mb-4 border border-yellow-300">
-          <strong>Aviso importante:</strong> Nos encontramos en la etapa inicial de lanzamiento de Needine. Agradecemos su interés y comprensión mientras finalizamos los preparativos para ofrecer nuestros servicios.
-        </div>
-        
-        {/* Login/Logout según sesión */}
-        <div className="mt-4 flex justify-end">
-          {session ? (
-            <div className="flex flex-col items-end space-y-2">
-              <p className="text-sm text-gray-700">Bienvenido, {session.user?.name}</p>
-              <button
-                onClick={() => signOut()}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md"
-              >
-                Cerrar sesión
-              </button>
+    <main>
 
-              <a
-                href="/private"
-                className="inline-block px-6 py-3 text-white bg-gray-800 hover:bg-gray-700 rounded-lg shadow-md transition mt-2"
-              >
-                Acceso parte privada
-              </a>
-            </div>
-          ) : (
-            <button
-              onClick={() => signIn()}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
-            >
-              Iniciar sesión privada
-            </button>
-          )}
-        </div>      
-        <div className="flex justify-center">
-          {/* <img
-            src="/logo.PNG"
-            alt="Logo NEEDINE"
-            className="w-48 h-48 md:w-64 md:h-64 object-contain mb-6"
-          />*/}
-          <Image
-            src="/logo.PNG"
-            alt="Logo NEEDINE"
-            width={284}
-            height={284}
-            className="object-contain mb-6"
-          />          
-        </div>
-        <div className="relative w-full max-w-4xl h-[300px] md:h-[400px] mb-8 rounded-xl overflow-hidden shadow-lg bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
-          <div className="absolute inset-0 bg-black/40 z-10" />
-          {/*  
-          <img
-            src="/automation-illustration.png"
-            alt="Automatización inteligente"
-            className="absolute inset-0 w-full h-full object-cover opacity-40"
-          />
-          */}
-          <div className="absolute inset-0 opacity-40">
-            <Image
-              src="/automation-illustration.png"
-              alt="Automatización inteligente"
-              fill
-              style={{ objectFit: 'cover' }}
-              priority={true}
-            />
-          </div>
-{/*      
-
-          <div className="relative z-20 h-full flex flex-col items-center justify-center px-6 text-center">
-            <h2 className="text-white text-2xl md:text-4xl font-semibold leading-tight drop-shadow-md">
-              Transformamos tu empresa <br />
-              con flujos inteligentes y automatizados
-            </h2>
-            <p className="text-gray-200 text-sm mt-4 max-w-xl">
-              Detectamos cuellos de botella y tareas repetitivas en tus procesos. Luego diseñamos e implementamos flujos automáticos con n8n e Inteligencia Artificial para que tu equipo gane tiempo y eficiencia.
-            </p>
-          </div>
-        </div>
-        <p className="text-lg md:text-xl text-gray-600 mb-8">
-          Automatizamos procesos empresariales aplicando inteligencia artificial. Diseñamos flujos que transforman la eficiencia operativa de tu organización.
-        </p>
-*/}
-        <div className="relative z-20 h-full flex flex-col items-center justify-center px-6 text-center">
-          <h2 className="text-white text-2xl md:text-4xl font-semibold leading-tight drop-shadow-md">
-            Expertos en Blockchain <br />
-            y tokenización de activos
-          </h2>
-          <p className="text-gray-200 text-sm mt-4 max-w-xl">
-            En Needine ayudamos a empresas y organizaciones a transformar sus activos en tokens digitales, 
-            creando nuevas oportunidades de inversión y liquidez con la seguridad de la tecnología blockchain.
+      {/* HERO */}
+      <section className="relative bg-gradient-to-r from-blue-900 to-gray-900 text-white py-24 text-center">
+        <div className="max-w-4xl mx-auto px-6">
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+            Tokenización de Activos en Blockchain
+          </h1>
+          <p className="mt-6 text-lg md:text-xl text-gray-200">
+            Needine transforma activos físicos y financieros en tokens digitales,
+            abriendo nuevas oportunidades de inversión, liquidez y eficiencia.
           </p>
+          <button className="mt-8 px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-2xl shadow-lg font-semibold">
+            Descubre cómo funciona
+          </button>
         </div>
-        </div>
-        <p className="text-lg md:text-xl text-gray-600 mb-8">
-          Ofrecemos servicios de tokenización de activos respaldados en blockchain, brindando transparencia, eficiencia 
-          y nuevas formas de crecimiento para nuestros clientes.
-        </p>
-      </header>
-      
-      <Chat />
+      </section>
 
+      {/* SERVICIOS */}
       <section className="mt-24 max-w-5xl mx-auto text-center px-6">
         <h2 className="text-4xl font-bold text-gray-900 mb-4">
-          Tokenización de Activos en Blockchain
+          Nuestros Servicios
         </h2>
-        <p className="text-gray-600 text-lg mb-6">
-          En <strong className="text-blue-600">Needine</strong> convertimos activos físicos y financieros en tokens digitales, 
-          abriendo nuevas oportunidades de liquidez, inversión y eficiencia para empresas e inversores.
+        <p className="text-gray-600 text-lg mb-12">
+          Ofrecemos soluciones integrales para digitalizar y tokenizar activos
+          con la máxima seguridad y transparencia.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left text-gray-800">
@@ -145,133 +35,88 @@ export default function Home() {
           <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition">
             <h3 className="font-semibold text-lg mb-2 text-gray-900">🏢 Tokenización inmobiliaria</h3>
             <p className="text-sm text-gray-700">
-              Permite a los inversores acceder a propiedades fraccionadas mediante tokens, 
-              democratizando la inversión en bienes raíces.
+              Permite invertir en propiedades de forma fraccionada, democratizando
+              el acceso al sector inmobiliario global.
             </p>
           </div>
 
           <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition">
             <h3 className="font-semibold text-lg mb-2 text-gray-900">💎 Activos financieros y commodities</h3>
             <p className="text-sm text-gray-700">
-              Transformamos bonos, acciones, metales preciosos o materias primas en tokens que pueden negociarse con mayor liquidez y transparencia.
+              Bonos, acciones, metales preciosos o materias primas convertidos
+              en tokens líquidos y negociables.
             </p>
           </div>
 
           <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition">
-            <h3 className="font-semibold text-lg mb-2 text-gray-900">🌍 Acceso global e inclusión</h3>
+            <h3 className="font-semibold text-lg mb-2 text-gray-900">🌍 Inclusión y acceso global</h3>
             <p className="text-sm text-gray-700">
-              La tokenización elimina barreras geográficas, permitiendo a cualquier persona invertir en activos de cualquier parte del mundo.
+              Rompemos barreras geográficas para que cualquier persona pueda
+              invertir en activos de todo el mundo.
             </p>
           </div>
 
           <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition">
             <h3 className="font-semibold text-lg mb-2 text-gray-900">🔒 Seguridad y transparencia</h3>
             <p className="text-sm text-gray-700">
-              Usamos contratos inteligentes y blockchain pública para garantizar trazabilidad, 
-              seguridad y confianza en cada transacción.
+              Blockchain pública y contratos inteligentes para garantizar
+              confianza y trazabilidad en cada operación.
             </p>
           </div>
 
         </div>
       </section>
 
-{/*      
-      <section className="mt-24 max-w-5xl mx-auto text-center px-6" id="services">
-        <h2 className="text-4xl font-bold text-gray-900 mb-4">¿Qué hacemos?</h2>
-        <p className="text-gray-600 text-lg mb-6">
-          Automatizamos tus procesos de negocio combinando <span className="font-medium text-blue-600">tecnología visual</span> y <span className="font-medium text-blue-600">modelos de IA</span> para que tu equipo se enfoque en tareas estratégicas, no repetitivas.
-        </p>
-        <ul className="text-left text-gray-800 space-y-3 text-base max-w-2xl mx-auto">
-          <li>✅ Reducimos el tiempo y los errores en procesos clave</li>
-          <li>✅ Liberamos a tus equipos operativos de tareas repetitivas</li>
-          <li>✅ Diseñamos flujos inteligentes que escalan con tu negocio</li>
-        </ul>
-      </section>
- 
-      <section className="mt-24 max-w-5xl mx-auto text-center px-6">
-        <h2 className="text-4xl font-bold text-gray-900 mb-4">IA aplicada al lenguaje</h2>
-        <p className="text-gray-600 text-lg mb-6">
-          Con <strong className="text-blue-600">Procesamiento de Lenguaje Natural (NLP)</strong>, transformamos textos en datos accionables, mejorando la eficiencia en atención, análisis y toma de decisiones.
-        </p>
+      {/* BENEFICIOS */}
+      <section className="mt-24 bg-gray-50 py-16 px-6">
+        <div className="max-w-5xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8">
+            Beneficios de la Tokenización
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left text-gray-800">
-          <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition">
-            <h3 className="font-semibold text-lg mb-2 text-gray-900">📄 Automatización documental</h3>
-            <p className="text-sm text-gray-700">
-              Extraemos y procesamos información desde correos, contratos o PDFs de forma automática y sin errores.
-            </p>
-          </div>
-          <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition">
-            <h3 className="font-semibold text-lg mb-2 text-gray-900">🤖 Chatbots contextuales</h3>
-            <p className="text-sm text-gray-700">
-              Creamos asistentes capaces de comprender intenciones, responder preguntas y aprender con el tiempo.
-            </p>
-          </div>
-          <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition">
-            <h3 className="font-semibold text-lg mb-2 text-gray-900">📊 Análisis de sentimiento</h3>
-            <p className="text-sm text-gray-700">
-              Analizamos el tono y emociones en feedback de clientes para extraer insights accionables.
-            </p>
-          </div>
-          <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition">
-            <h3 className="font-semibold text-lg mb-2 text-gray-900">🌐 Clasificación inteligente</h3>
-            <p className="text-sm text-gray-700">
-              Clasificamos y dirigimos correos, tickets o mensajes según urgencia, idioma o intención.
-            </p>
+            <div>
+              <h3 className="font-semibold text-lg mb-2">⚡ Liquidez inmediata</h3>
+              <p className="text-gray-700">
+                Los tokens permiten intercambiar activos que antes eran
+                ilíquidos, como bienes raíces o arte.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-lg mb-2">🤝 Transparencia total</h3>
+              <p className="text-gray-700">
+                Cada transacción queda registrada en blockchain, ofreciendo
+                trazabilidad y confianza.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-lg mb-2">📈 Nuevos modelos de negocio</h3>
+              <p className="text-gray-700">
+                Abre la puerta a financiamiento descentralizado (DeFi),
+                fraccionamiento de activos y mayor acceso al capital.
+              </p>
+            </div>
+
           </div>
         </div>
       </section>
 
-*/}
-{/*  
-      <section className="mt-24 max-w-2xl w-full" id="contact">
-        <h2 className="text-2xl font-semibold mb-4 text-center">Contáctanos</h2>
-        <p className="text-center text-gray-600 mb-6">
-          ¿Tienes un proyecto en mente o necesitas más información? Escríbenos.
+      {/* CTA FINAL */}
+      <section className="mt-24 text-center py-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-6">
+          ¿Listo para tokenizar tus activos?
+        </h2>
+        <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
+          En Needine diseñamos soluciones de tokenización personalizadas para
+          empresas, instituciones y proyectos innovadores.
         </p>
-        <form onSubmit={handleSubmit} className="space-y-4 bg-gray-50 p-6 rounded-xl shadow-md">
-          <input
-            type="text"
-            name="name"
-            placeholder="Nombre"
-            required
-            className="w-full border border-gray-300 rounded-md px-4 py-2"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Correo electrónico"
-            required
-            className="w-full border border-gray-300 rounded-md px-4 py-2"
-            value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          />
-          <textarea
-            name="message"
-            placeholder="Tu mensaje"
-            rows={4}
-            required
-            className="w-full border border-gray-300 rounded-md px-4 py-2"
-            value={formData.message}
-            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-          />
-          <button
-            type="submit"
-            className="w-full bg-gray-900 text-white py-2 rounded-md hover:bg-gray-800 transition"
-          >
-            Enviar mensaje
-          </button>
-          {status && <p className="text-sm text-center mt-2 text-gray-600">{status}</p>}
-        </form>
+        <button className="px-8 py-4 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 shadow-lg font-semibold">
+          Habla con un experto
+        </button>
       </section>
 
-*/}
-      <footer className="mt-24 text-center text-gray-500 text-sm" id="contact">
-        <p>© 2025 needine.com — Innovación en tokenizacion de activos</p>
-        {/*<p>Email: contacto@needine.ai</p>*/}
-      </footer>
     </main>
   );
 }
