@@ -29,15 +29,24 @@ export async function POST(req: Request) {
     console.log("✅ Respuesta de Resend:", response);
 
     return NextResponse.json({ success: true, response });
-  } catch (error: any) {
-    // Log del error con más detalle
-    console.error("❌ Error enviando email:", {
-      message: error.message,
-      stack: error.stack,
-      ...error, // incluye propiedades extras si las hay
-    });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("❌ Error enviando email:", {
+        message: error.message,
+        stack: error.stack,
+      });
 
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+      return NextResponse.json(
+        { success: false, error: error.message },
+        { status: 500 }
+      );
+    }
+
+    console.error("❌ Error inesperado:", error);
+    return NextResponse.json(
+      { success: false, error: "Error desconocido" },
+      { status: 500 }
+    );
   }
 }
 
