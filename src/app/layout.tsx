@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Needine",
-  description: "Software",
+  description: "Blockchain y tokenización de activos para empresas",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

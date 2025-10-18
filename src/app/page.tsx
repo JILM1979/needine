@@ -1,9 +1,35 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+
 
 export default function Page() {
-  
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const form = e.currentTarget as HTMLFormElement; // referencia directa
+    const formData = new FormData(form);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        form.reset();   // ahora funciona ✅
+        setStatus("success");
+      } else {
+        setStatus("error");
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus("error");
+    }
+  }
 
   return (
     <main>
@@ -121,8 +147,7 @@ export default function Page() {
         </p>
 
         <form
-          action="/api/contact"
-          method="POST"
+          onSubmit={handleSubmit}
           className="max-w-md mx-auto flex flex-col gap-4"
         >
           <input
@@ -150,10 +175,18 @@ export default function Page() {
             type="submit"
             className="px-6 py-3 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 shadow-lg font-semibold"
           >
-            Enviar
+            {status === "sending" ? "Enviando..." : "Enviar"}
           </button>
+
+          {status === "success" && (
+            <p className="text-green-600">✅ Mensaje enviado correctamente</p>
+          )}
+          {status === "error" && (
+            <p className="text-red-600">❌ Hubo un error, inténtalo de nuevo</p>
+          )}
         </form>
       </section>
+
 
     </main>
   );
