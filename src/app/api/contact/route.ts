@@ -14,10 +14,8 @@ export async function POST(req: Request) {
     console.log("📩 Datos recibidos:", { name, email, message });
 
     const response = await resend.emails.send({
-      from: "Needine <juani@needine.com>",
-//      from: "onboarding@resend.dev",    
+      from: "Needine <juani@needine.com>",   
       to: "info@needine.com",
-//      to: "entradajuan@gmail.com",
       subject: "Nuevo contacto desde la web Needine",
       text: `Nombre: ${name}\nEmail: ${email}\nMensaje: ${message}`,
       html: `<p><strong>Nombre:</strong> ${name}</p>

@@ -35,38 +35,35 @@ export default function Page() {
   return (
     <main>
 
-       {/* HEADER SUPERIOR con botón a /conectar */}
-<header className="sticky top-0 z-50 bg-white/70 backdrop-blur border-b">
-  <div className="max-w-5xl mx-auto flex items-center justify-between px-6 py-4">
-    {/* Logo + Nombre */}
-    <Link href="/" className="flex items-center gap-3 hover:opacity-80">
-      <img
-        src="/logo.png"            // 👈 ruta de tu logo
-        alt="Needine logo"
-        className="h-12 w-auto"    // más grande (48px alto)
-      />
-      <span className="font-bold text-gray-900 text-2xl">
-        
-      </span>
-    </Link>
+      {/* HEADER SUPERIOR con botón a /conectar */}
+      <header className="sticky top-0 z-50 bg-white/70 backdrop-blur border-b">
+        <div className="max-w-5xl mx-auto flex items-center justify-between px-6 py-4">
+          {/* Logo + Nombre */}
+          <Link href="/" className="flex items-center gap-3 hover:opacity-80">
+            <img
+              src="/logo.png"            // 👈 ruta de tu logo
+              alt="Needine logo"
+              className="h-12 w-auto"    // más grande (48px alto)
+            />
+            <span className="font-bold text-gray-900 text-2xl">
 
-    {/* Botón conectar */}
-    <Link
-      href="/conectar"
-      className="px-5 py-3 rounded-2xl bg-blue-600 text-white hover:bg-blue-700 font-semibold shadow text-lg"
-    >
-      Dapp
-    </Link>
-  </div>
-</header>
+            </span>
+          </Link>
 
-
-
+          {/* Botón conectar */}
+          <Link
+            href="/conectar"
+            className="px-5 py-3 rounded-2xl bg-blue-600 text-white hover:bg-blue-700 font-semibold shadow text-lg"
+          >
+            Dapp
+          </Link>
+        </div>
+      </header>
 
       {/* BANNER SUPERIOR */}
       <div className="bg-blue-600 text-white text-center py-3 px-4 text-sm md:text-base">
-        🚀 Needine.com está en construcción: 
-        <span className="font-semibold"> pronto ofreceremos servicios de tokenización de activos basados en blockchain.</span>  
+        🚀 Needine.com está en construcción:
+        <span className="font-semibold"> pronto ofreceremos servicios de tokenización de activos basados en blockchain.</span>
         Síguenos desde ahora y sé parte del futuro de la inversión digital.
       </div>
 
@@ -80,7 +77,7 @@ export default function Page() {
             Needine transforma activos físicos y financieros en tokens digitales,
             abriendo nuevas oportunidades de inversión, liquidez y eficiencia.
           </p>
-          
+
         </div>
       </section>
 
@@ -127,7 +124,7 @@ export default function Page() {
             </p>
           </div>
         </div>
-          </section>
+      </section>
 
       {/* BENEFICIOS */}
       <section id="beneficios" className="mt-24 bg-gray-50 py-16 px-6">
