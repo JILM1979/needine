@@ -20,6 +20,9 @@
     "resend": "^6.1.3",
     "uuid": "^11.1.0"
   },
+  "engines": {
+    "node": "18.x"
+  },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
