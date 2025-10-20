@@ -73,6 +73,7 @@ export default function ConectarPage() {
     return (window as any).ethereum ?? null;
   };
 
+  /*
   const createToken = async () => {
     try {
         await ensureSepolia(); // 👈 asegura que estás en Sepolia
@@ -86,7 +87,7 @@ export default function ConectarPage() {
         console.error("Error:", err);
     }
     };
-
+  */
   // Conectar cartera
   const connectWallet = async () => {
     try {
