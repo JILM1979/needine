@@ -94,7 +94,7 @@ export default function ConectarPage() {
   };
 
   useEffect(() => {
-    console.log("✅ Entrando en ConectarPage");
+    console.log("✅ Entrando en ConectarPage ahora");
 
     if (Array.isArray(factoryAbi)) {
       console.log("ABI length:", factoryAbi.length);
