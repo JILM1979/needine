@@ -26,6 +26,31 @@ export default function ConectarPage() {
     const [isFixedValue, setIsFixedValue] = useState(false);
     const [hasIncome, setHasIncome] = useState(false);
 
+    const disconnectWallet = () => {
+        setAccount(null);
+        setChainId(null);
+        setError(null);
+        setConnecting(false);
+    };
+    const changeAccount = async () => {
+        if (!window.ethereum) return;
+        try {
+            await window.ethereum.request({
+                method: "wallet_requestPermissions",
+                params: [{ eth_accounts: {} }],
+            });
+
+            const accounts = (await window.ethereum.request({
+                method: "eth_requestAccounts",
+            })) as string[];
+
+            setAccount(accounts?.[0] ?? null);
+
+        } catch (err) {
+            console.warn(err);
+        }
+    };
+
     const handleCreateToken = async (e: React.FormEvent) => {
         e.preventDefault();
         setDeploying(true);
@@ -55,17 +80,7 @@ export default function ConectarPage() {
 
             setTxHash(tx.hash);
             const receipt = await tx.wait();
-            /*
-            const event = receipt.logs
-                .map((log: any) => {
-                    try {
-                        return factory.interface.parseLog(log);
-                    } catch {
-                        return null;
-                    }
-                })
-                .find((parsed: any) => parsed && parsed.name === "AssetTokenCreated");
-*/
+
 
             const event = receipt.logs
                 .map((log: Log) => {
@@ -132,21 +147,7 @@ export default function ConectarPage() {
 
     useEffect(() => {
         console.log("✅ Entrando en ConectarPage ahora");
-        /*
-        (async () => {
-            try {
-                const factory = await getFactoryWithSigner();
-                const predicted = await factory.createAssetToken.staticCall(
-                    "TestToken",
-                    "TTK",
-                    parseUnits("1000", 18)
-                );
-                console.log("Predicted new token address:", predicted);
-            } catch (err) {
-                console.error("Error llamando a staticCall:", err);
-            }
-        })();
-        */
+
         if (Array.isArray(factoryAbi)) {
             console.log("ABI length:", factoryAbi.length);
             console.log("Factory:", FACTORY_ADDRESS, "Chain:", SEPOLIA.name);
@@ -236,7 +237,7 @@ export default function ConectarPage() {
                             .
                         </div>
                     )}
-
+                    {/*}
                     <div className="flex items-center gap-3">
                         <button
                             onClick={connectWallet}
@@ -257,87 +258,45 @@ export default function ConectarPage() {
                             </span>
                         )}
                     </div>
+*/}
 
-                    {error && <p className="mt-4 text-red-600">{error}</p>}
-                    {/*
-                    <div className="mt-8 p-6 rounded-xl bg-gray-100">
-                        <h2 className="text-xl font-semibold mb-4">Tokenizar un activo</h2>
-                        <form onSubmit={handleCreateToken} className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium">
-                                    Nombre del token
-                                </label>
-                                <input
-                                    value={tokenName}
-                                    onChange={(e) => setTokenName(e.target.value)}
-                                    className="w-full p-2 border rounded-lg"
-                                    placeholder="Ej: Needine Real Estate"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Símbolo</label>
-                                <input
-                                    value={tokenSymbol}
-                                    onChange={(e) => setTokenSymbol(e.target.value)}
-                                    className="w-full p-2 border rounded-lg"
-                                    placeholder="Ej: NRE"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">
-                                    Suministro inicial
-                                </label>
-                                <input
-                                    type="number"
-                                    min="1"
-                                    value={supply}
-                                    onChange={(e) => setSupply(e.target.value)}
-                                    className="w-full p-2 border rounded-lg"
-                                />
-                                <p className="text-xs text-gray-600 mt-1">
-                                    El suministro se ajustará a 18 decimales automáticamente.
-                                </p>
-                            </div>
-                            <button
-                                type="submit"
-                                disabled={deploying}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50"
-                            >
-                                {deploying ? "Creando token..." : "Crear token"}
-                            </button>
-                        </form>
+                    <div className="flex items-center gap-3">
+                        {/* Botón conectar / desconectar */}
+                        <button
+                            onClick={account ? disconnectWallet : connectWallet}
+                            disabled={connecting}
+                            className={`px-5 py-3 rounded-2xl font-semibold shadow text-white disabled:opacity-60
+                                ${account ? "bg-red-600 hover:bg-red-700" : "bg-blue-600 hover:bg-blue-700"}`}
+                        >
+                            {connecting
+                                ? "Conectando..."
+                                : account
+                                    ? "Desconectar"
+                                    : "Conectar MetaMask"}
+                        </button>
 
-                        {txHash && (
-                            <p className="mt-4 text-sm">
-                                Tx enviada:{" "}
-                                <a
-                                    href={`https://sepolia.etherscan.io/tx/${txHash}`}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="text-blue-600 underline"
-                                >
-                                    ver en Etherscan
-                                </a>
-                            </p>
+                        {/* Texto de conexión */}
+                        {account && (
+                            <span className="text-sm text-gray-700 truncate">
+                                Conectado: <span className="font-mono">{account}</span>
+                                {chainId ? ` · Chain ID: ${chainId}` : null}
+                            </span>
                         )}
 
-                        {tokenAddress && (
-                            <p className="mt-2 text-sm">
-                                Token desplegado:{" "}
-                                <a
-                                    href={`https://sepolia.etherscan.io/address/${tokenAddress}`}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="text-blue-600 underline"
-                                >
-                                    {tokenAddress}
-                                </a>
-                            </p>
+                        {/* Botón para cambiar cuenta */}
+                        {account && (
+                            <button
+                                onClick={changeAccount}
+                                className="px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium"
+                            >
+                                Cambiar cuenta
+                            </button>
                         )}
                     </div>
-                    */}
+
+
+                    {error && <p className="mt-4 text-red-600">{error}</p>}
+
                     <div className="mt-8 p-6 rounded-xl bg-gray-100">
                         <h2 className="text-xl font-semibold mb-4">Tokenizar un activo</h2>
                         <form onSubmit={handleCreateToken} className="space-y-4">
