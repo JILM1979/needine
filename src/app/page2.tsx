@@ -1,17 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
+import Link from "next/link"; // 👈 añade esto
+
 
 export default function Page() {
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
-    "idle"
-  );
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const form = e.currentTarget as HTMLFormElement;
+    const form = e.currentTarget as HTMLFormElement; // referencia directa
     const formData = new FormData(form);
 
     try {
@@ -19,11 +18,10 @@ export default function Page() {
         method: "POST",
         body: formData,
       });
-
       const data = await res.json();
 
       if (data.success) {
-        form.reset();
+        form.reset();   // ahora funciona ✅
         setStatus("success");
       } else {
         setStatus("error");
@@ -36,18 +34,23 @@ export default function Page() {
 
   return (
     <main>
-      {/* HEADER */}
+
+      {/* HEADER SUPERIOR con botón a /conectar */}
       <header className="sticky top-0 z-50 bg-white/70 backdrop-blur border-b">
         <div className="max-w-5xl mx-auto flex items-center justify-between px-6 py-4">
+          {/* Logo + Nombre */}
           <Link href="/" className="flex items-center gap-3 hover:opacity-80">
             <img
-              src="/logo.png"
+              src="/logo.png"            // 👈 ruta de tu logo
               alt="Needine logo"
-              className="h-12 w-auto"
+              className="h-12 w-auto"    // más grande (48px alto)
             />
-            <span className="font-bold text-gray-900 text-2xl"></span>
+            <span className="font-bold text-gray-900 text-2xl">
+
+            </span>
           </Link>
 
+          {/* Botón conectar */}
           <Link
             href="/conectar"
             className="px-5 py-3 rounded-2xl bg-blue-600 text-white hover:bg-blue-700 font-semibold shadow text-lg"
@@ -57,61 +60,67 @@ export default function Page() {
         </div>
       </header>
 
-      {/* BANNER SUPERIOR → mensaje legal clave */}
+      {/* BANNER SUPERIOR */}
       <div className="bg-blue-600 text-white text-center py-3 px-4 text-sm md:text-base">
-        ⚠️ Importante: Needine crea <b>tokens de utilidad</b>. 
-        No representamos acciones, pisos, deuda, dividendos ni propiedad legal de activos reales.
+        🚀 Needine.com está en construcción:
+        <span className="font-semibold"> pronto ofreceremos servicios de tokenización de activos basados en blockchain.</span>
+        Síguenos desde ahora y sé parte del futuro de la inversión digital.
       </div>
 
       {/* HERO */}
       <section className="relative bg-gradient-to-r from-blue-900 to-gray-900 text-white py-24 text-center">
         <div className="max-w-4xl mx-auto px-6">
           <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-            Tokens Utility para tu Ecosistema Digital
+            Tokenización de Activos en Blockchain
           </h1>
           <p className="mt-6 text-lg md:text-xl text-gray-200">
-            Needine te permite crear tokens con beneficios, acceso, membresías
-            y gamificación. Nunca representamos valor legal, financiero o 
-            propiedad real.
+            Needine transforma activos físicos y financieros en tokens digitales,
+            abriendo nuevas oportunidades de inversión, liquidez y eficiencia.
           </p>
+
         </div>
       </section>
 
       {/* SERVICIOS */}
       <section id="servicios" className="mt-24 max-w-5xl mx-auto text-center px-6">
         <h2 className="text-4xl font-bold text-gray-900 mb-4">
-          Qué Ofrecemos
+          Nuestros Servicios
         </h2>
         <p className="text-gray-600 text-lg mb-12">
-          Tokeniza utilidades digitales para tu comunidad sin complicaciones legales.
+          Ofrecemos soluciones integrales para digitalizar y tokenizar activos
+          con la máxima seguridad y transparencia.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left text-gray-800">
           <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition">
-            <h3 className="font-semibold text-lg mb-2 text-gray-900">🎟️ Membresías y accesos</h3>
+            <h3 className="font-semibold text-lg mb-2 text-gray-900">🏢 Tokenización inmobiliaria</h3>
             <p className="text-sm text-gray-700">
-              Crea niveles de acceso, perks y ventajas digitales con tu token.
+              Permite invertir en propiedades de forma fraccionada, democratizando
+              el acceso al sector inmobiliario global.
             </p>
           </div>
 
           <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition">
-            <h3 className="font-semibold text-lg mb-2 text-gray-900">🎮 Gamificación</h3>
+            <h3 className="font-semibold text-lg mb-2 text-gray-900">💎 Activos financieros y commodities</h3>
             <p className="text-sm text-gray-700">
-              Asigna recompensas, retos y beneficios para tu comunidad.
+              Bonos, acciones, metales preciosos o materias primas convertidos
+              en tokens líquidos y negociables.
             </p>
           </div>
 
           <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition">
-            <h3 className="font-semibold text-lg mb-2 text-gray-900">🎫 Tickets y reservas</h3>
+            <h3 className="font-semibold text-lg mb-2 text-gray-900">🌍 Inclusión y acceso global</h3>
             <p className="text-sm text-gray-700">
-              Tokeniza entradas, turnos, vouchers o créditos de servicio.
+              Rompemos barreras geográficas para que cualquier persona pueda
+              invertir en activos de todo el mundo.
             </p>
           </div>
 
           <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition">
-            <h3 className="font-semibold text-lg mb-2 text-gray-900">🛍️ Puntos de fidelidad</h3>
+            <h3 className="font-semibold text-lg mb-2 text-gray-900">🔒 Seguridad y transparencia</h3>
             <p className="text-sm text-gray-700">
-              Crea sistemas de puntos interoperables y transferibles.
+              Blockchain pública y contratos inteligentes para garantizar
+              confianza y trazabilidad en cada operación.
             </p>
           </div>
         </div>
@@ -121,28 +130,31 @@ export default function Page() {
       <section id="beneficios" className="mt-24 bg-gray-50 py-16 px-6">
         <div className="max-w-5xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-8">
-            Beneficios de Tokenizar con Utility Tokens
+            Beneficios de la Tokenización
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
 
             <div>
-              <h3 className="font-semibold text-lg mb-2">🔑 Acceso programable</h3>
+              <h3 className="font-semibold text-lg mb-2">⚡ Liquidez inmediata</h3>
               <p className="text-gray-700">
-                Controla niveles de acceso o perks mediante el token.
+                Los tokens permiten intercambiar activos que antes eran
+                ilíquidos, como bienes raíces o arte.
               </p>
             </div>
 
             <div>
-              <h3 className="font-semibold text-lg mb-2">⚙️ Sin dependencia legal</h3>
+              <h3 className="font-semibold text-lg mb-2">🤝 Transparencia total</h3>
               <p className="text-gray-700">
-                No representan activos físicos ni derechos financieros.
+                Cada transacción queda registrada en blockchain, ofreciendo
+                trazabilidad y confianza.
               </p>
             </div>
 
             <div>
-              <h3 className="font-semibold text-lg mb-2">🌍 Intercambiables libremente</h3>
+              <h3 className="font-semibold text-lg mb-2">📈 Nuevos modelos de negocio</h3>
               <p className="text-gray-700">
-                Tus usuarios pueden moverlos en wallets y DEX sin burocracia.
+                Abre la puerta a financiamiento descentralizado (DeFi),
+                fraccionamiento de activos y mayor acceso al capital.
               </p>
             </div>
 
@@ -150,20 +162,41 @@ export default function Page() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* CTA FINAL */}
       <section id="cta" className="mt-24 text-center py-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-6">
-          ¿Listo para crear tu token utility?
+          ¿Listo para tokenizar tus activos?
         </h2>
         <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-          Needine se especializa en tokens digitales basados en utilidades, acceso,
-          perks y gamificación. Lo que hagan luego tus usuarios es responsabilidad de ellos.
+          En Needine diseñamos soluciones de tokenización personalizadas para
+          empresas, instituciones y proyectos innovadores.
         </p>
 
-        <form onSubmit={handleSubmit} className="max-w-md mx-auto flex flex-col gap-4">
-          <input type="text" name="name" placeholder="Tu nombre" required className="p-3 border border-gray-300 rounded-lg" />
-          <input type="email" name="email" placeholder="Tu correo" required className="p-3 border border-gray-300 rounded-lg" />
-          <textarea name="message" placeholder="Cuéntanos sobre tu idea" required className="p-3 border border-gray-300 rounded-lg" rows={4} />
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-md mx-auto flex flex-col gap-4"
+        >
+          <input
+            type="text"
+            name="name"
+            placeholder="Tu nombre"
+            required
+            className="p-3 border border-gray-300 rounded-lg"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Tu correo"
+            required
+            className="p-3 border border-gray-300 rounded-lg"
+          />
+          <textarea
+            name="message"
+            placeholder="Cuéntanos sobre tu proyecto"
+            required
+            className="p-3 border border-gray-300 rounded-lg"
+            rows={4}
+          />
           <button
             type="submit"
             className="px-6 py-3 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 shadow-lg font-semibold"
@@ -179,6 +212,8 @@ export default function Page() {
           )}
         </form>
       </section>
+
+
     </main>
   );
 }
