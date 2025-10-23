@@ -5,6 +5,14 @@
   --foreground: #171717;
 }
 
+@layer utilities {
+  .transition-max-height {
+    transition-property: max-height;
+    transition-timing-function: ease;
+    transition-duration: 300ms;
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
