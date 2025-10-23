@@ -218,7 +218,7 @@ export default function ConectarPage() {
                     Conectar con MetaMask
                 </h1>
                 <p className="mt-2 text-gray-600">
-                    Aquí es donde, más adelante, los clientes podrán tokenizar sus activos.
+                    Aquí es donde, más adelante, los clientes podrán tokenizar.
                     Primero conecta tu cartera.
                 </p>
 
@@ -298,7 +298,7 @@ export default function ConectarPage() {
                     {error && <p className="mt-4 text-red-600">{error}</p>}
 
                     <div className="mt-8 p-6 rounded-xl bg-gray-100">
-                        <h2 className="text-xl font-semibold mb-4">Tokenizar un activo</h2>
+                        <h2 className="text-xl font-semibold mb-4">Tokenizar ahora</h2>
                         <form onSubmit={handleCreateToken} className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium">Nombre del token</label>
