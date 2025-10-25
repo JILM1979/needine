@@ -49,7 +49,7 @@ export default function Page() {
 
                         {/* 👇 Mensaje de construcción */}
                         <span className="text-red-600 font-semibold text-sm md:text-base flex items-center gap-1">
-                            🚧 En construcción · Contratos en Sepolia
+                            🚧 En construcción · Contratos en Red Sepolia
                         </span>
                     </Link>
 

@@ -211,7 +211,7 @@ export default function TokenizarPage() {
                         <img src="/logo.png" alt="Needine logo" className="h-12 w-auto" />
                         {/* 👇 Mensaje de construcción */}
                         <span className="text-red-600 font-semibold text-sm md:text-base flex items-center gap-1">
-                            🚧 En construcción · Contratos en Sepolia
+                            🚧 En construcción · Contratos en Red Sepolia
                         </span>
                     </Link>
                     <span className="text-lg text-gray-700 font-medium">
