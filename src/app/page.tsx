@@ -50,7 +50,7 @@ export default function Page() {
                     </Link>
 
                     <Link
-                        href="/conectar"
+                        href="/tokenizar"
                         className="px-5 py-3 rounded-2xl bg-blue-600 text-white hover:bg-blue-700 font-semibold shadow text-lg"
                     >
                         Tokenizar
