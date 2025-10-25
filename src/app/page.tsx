@@ -182,6 +182,69 @@ export default function Page() {
             </section>
             <AccordionFAQ />
 
+            {/* SOBRE EL CREADOR */}
+
+            <section id="about" className="mt-24 bg-white py-16 px-6 border-t">
+                <div className="max-w-5xl mx-auto text-center">
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
+                        ¿Quién está detrás de Needine?
+                    </h2>
+
+                    <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
+                        {/* FOTO */}
+                        <div className="w-32 h-32 md:w-40 md:h-40 mx-auto overflow-hidden rounded-full border-4 border-blue-500">
+                            <img
+                                src="/juani.png"
+                                alt="Foto de Juan Ignacio López Martínez"
+                                className="object-cover object-center w-full h-full scale-110"
+                            />
+
+                        </div>
+
+                        {/* TEXTO */}
+                        <div className="text-gray-700 leading-relaxed text-lg max-w-3xl">
+                            <p className="mb-4">
+                                👋 Soy <b>Juan Ignacio</b>, profesional de tecnología con más de 15 años de experiencia
+                                en diferentes areas de las Tecnologias de la información. En <b>needine.com</b> investigo mecánicas de tokenización 
+                                mediante smart contracts en Solidity sobre redes Ethereum/EVM. Exploro seguridad, modelos de permisos,
+                                almacenamiento descentralizado (IPFS) e integración con wallets como MetaMask.
+                            </p>
+                            <p className="mb-4">
+                                El desarrollo incluye la implementación de estándares ERC-20, ERC-721 y ERC-1155
+                                utilizando OpenZeppelin, pruebas automatizadas con Hardhat bajo enfoque TDD, e
+                                integración frontend/Web3 mediante Ethers.js para interacción transaccional y
+                                lectura de estado on-chain.
+                            </p>
+                            <p className="mb-4">
+                                La línea de investigación actual incluye integración de modelos de
+                                <b> inteligencia artificial</b> para reputación dinámica, recomendaciones de
+                                contenido e interacciones de agentes autónomos dentro de ecosistemas Web3.
+                            </p>
+                            <p className="mb-4">
+                                Si tienes una idea o proyecto, estaré encantado de discutirla contigo. 😊
+                            </p>
+                            <p className="font-semibold text-gray-900 mt-4">
+                                Este proyecto no representa activos financieros, propiedad real ni rendimientos.
+                                Es estudio experimental sobre <b>utility tokens</b> y arquitecturas descentralizadas.
+                            </p>
+                            <p className="mt-6 text-sm text-gray-600">
+                                <b>Tech stack:</b> Solidity · Ethereum/EVM · Hardhat · OpenZeppelin · Ethers.js · MetaMask · IPFS · Tokenization · TDD · CI/CD
+                            </p>
+
+                            <p className="mt-8">
+                                <a
+                                    href="https://www.linkedin.com/in/juan-ignacio-l%C3%B3pez-mart%C3%ADnez-b282883b/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-600 hover:underline font-medium"
+                                >
+                                    Ver mi perfil en LinkedIn
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
         </main>
     );
