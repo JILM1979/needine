@@ -1,7 +1,7 @@
 
 // src/lib/chain.ts
 export const FACTORY_ADDRESS: string =
-  "0x839BBe98bf73Fc176836f931e7f64a4a2Ae6F5A8"; // cámbialo por tu address de tu contrato
+  "0x009bd52BbF495eEd55bdbb8A5b9098E6eB5d33f7"; // cámbialo por tu address de tu contrato
 
 export const SEPOLIA: { id: number; name: string } = {
   id: 11155111,

@@ -23,9 +23,10 @@ export default function TokenizarPage() {
     const [txHash, setTxHash] = useState<string | null>(null);
     const [tokenAddress, setTokenAddress] = useState<string | null>(null);
 
-//    const [isFungible, setIsFungible] = useState(true);
+    //    const [isFungible, setIsFungible] = useState(true);
     const [isMintable, setIsMintable] = useState(true);
     const [isBurnable, setIsBurnable] = useState(true);
+    const [isStakable, setIsStakable] = useState(true);
 
     const disconnectWallet = () => {
         setAccount(null);
@@ -69,13 +70,15 @@ export default function TokenizarPage() {
             const initialSupply = parseUnits(supply, 18);
 
             // 🔹 Llamada completa con opciones y valor enviado
-            const tx = await factory.createAssetToken(
-                tokenName,
-                tokenSymbol,
-                initialSupply,
-                isMintable,
-                isBurnable,
-                description,
+            const tx = await factory.createAssetToken({
+                name: tokenName,
+                symbol: tokenSymbol,
+                supply: initialSupply,
+                isMintable: isMintable,
+                isBurnable: isBurnable,
+                description: description,
+                enableStaking: isStakable
+            },
                 { value: feeInEth } // envío del pago en ETH
             );
 
@@ -353,7 +356,7 @@ export default function TokenizarPage() {
                                         checked={isMintable}
                                         onChange={(e) => setIsMintable(e.target.checked)}
                                     />
-                                    Activo mintable 
+                                    Token mintable
                                 </label>
 
                                 <label className="flex items-center gap-2 text-sm">
@@ -362,8 +365,18 @@ export default function TokenizarPage() {
                                         checked={isBurnable}
                                         onChange={(e) => setIsBurnable(e.target.checked)}
                                     />
-                                    Activo burnable
+                                    Token burnable
                                 </label>
+                                <label className="flex items-center gap-2 text-sm">
+                                    <input
+                                        type="checkbox"
+                                        checked={isStakable}
+                                        onChange={(e) => setIsStakable(e.target.checked)}
+                                    />
+                                    Token stakable
+                                </label>
+
+
                             </div>
 
                             <button
