@@ -209,10 +209,13 @@ export default function TokenizarPage() {
                     <Link href="/" className="flex items-center gap-3 hover:opacity-80">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src="/logo.png" alt="Needine logo" className="h-12 w-auto" />
-                        <span className="font-bold text-gray-900 text-2xl"></span>
+                        {/* 👇 Mensaje de construcción */}
+                        <span className="text-red-600 font-semibold text-sm md:text-base flex items-center gap-1">
+                            🚧 En construcción · Contratos en Sepolia
+                        </span>
                     </Link>
                     <span className="text-lg text-gray-700 font-medium">
-                        Conectar cartera
+                        
                     </span>
                 </div>
             </header>
