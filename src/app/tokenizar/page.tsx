@@ -1,7 +1,11 @@
 "use client";
-import { Log, LogDescription } from "ethers";
+//import { Log, LogDescription } from "ethers";
+//import { BrowserProvider } from "ethers";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { Log, LogDescription, BrowserProvider } from "ethers";
+
+//import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import factoryAbi from "@/abis/AssetTokenFactory.json";
 import { FACTORY_ADDRESS, SEPOLIA, ensureSepolia } from "@/lib/chain";
@@ -27,6 +31,83 @@ export default function TokenizarPage() {
     const [isMintable, setIsMintable] = useState(true);
     const [isBurnable, setIsBurnable] = useState(true);
     const [isStakable, setIsStakable] = useState(true);
+
+    const [myAssets, setMyAssets] = useState<MyAsset[]>([]);
+    const [loadingTokens, setLoadingTokens] = useState(false);
+    type MyAsset = {
+        tokenAddress: string;
+        vaultAddress: string;
+        stakePoolAddress: string | null;
+        name: string;
+        symbol: string;
+        supply: bigint; // ethers v6 devuelve bigint
+        isMintable: boolean;
+        isBurnable: boolean;
+        stakingEnabled: boolean;
+        owner: string;
+    };
+    const FACTORY_DEPLOY_BLOCK = 9489062; // Sepolia, 25-10-2025
+    const loadMyTokens = useCallback(async (currentAccount: string) => {
+        try {
+            setLoadingTokens(true);
+            await ensureSepolia();
+            if (!window.ethereum) {
+                throw new Error("No se encontró un proveedor Ethereum");
+            }
+            const provider = new BrowserProvider(window.ethereum);
+            const factory = await getFactoryWithSigner();
+            const iface = factory.interface;
+
+            const ev = iface.getEvent("AssetTokenCreated");
+            if (!ev) throw new Error("Evento AssetTokenCreated no existe en ABI");
+            const eventTopic = ev.topicHash;
+
+            const logs = await provider.getLogs({
+                address: FACTORY_ADDRESS,
+                fromBlock: FACTORY_DEPLOY_BLOCK,
+                toBlock: "latest",
+                topics: [eventTopic],
+            });
+
+            const parsed = logs
+                .map((log: Log) => {
+                    try {
+                        return iface.parseLog(log) as LogDescription;
+                    } catch {
+                        return null;
+                    }
+                })
+                .filter((ev: LogDescription | null) => ev && ev.name === "AssetTokenCreated")
+                .map((ev: LogDescription | null) => (ev!.args as Record<string, unknown>))
+                .filter((args: Record<string, unknown>) =>
+                    typeof args.owner === "string" &&
+                    (args.owner as string).toLowerCase() === currentAccount.toLowerCase()
+                )
+                .map((args: Record<string, unknown>) => ({
+                    tokenAddress: args.tokenAddress as string,
+                    vaultAddress: args.vaultAddress as string,
+                    stakePoolAddress:
+                        args.stakePoolAddress === "0x0000000000000000000000000000000000000000"
+                            ? null
+                            : (args.stakePoolAddress as string),
+                    name: args.name as string,
+                    symbol: args.symbol as string,
+                    supply: args.supply as bigint,
+                    isMintable: args.isMintable as boolean,
+                    isBurnable: args.isBurnable as boolean,
+                    stakingEnabled: args.stakingEnabled as boolean,
+                    owner: args.owner as string,
+                }));
+
+            const uniq: MyAsset[] = Array.from(
+                new Map(parsed.map((a: MyAsset) => [a.tokenAddress.toLowerCase(), a])).values()
+            );
+
+            setMyAssets(uniq);
+        } finally {
+            setLoadingTokens(false);
+        }
+    }, []);
 
     const disconnectWallet = () => {
         setAccount(null);
@@ -159,7 +240,6 @@ export default function TokenizarPage() {
             console.log("⚠️ factoryAbi está vacío o no se pudo importar");
         }
 
-
         const ethereum = window.ethereum;
         setHasProvider(!!ethereum);
         if (!ethereum) return;
@@ -201,6 +281,14 @@ export default function TokenizarPage() {
             ethereum?.removeListener?.("chainChanged", handleChainChanged);
         };
     }, []);
+    useEffect(() => {
+        if (account) {
+            loadMyTokens(account);
+        } else {
+            setMyAssets([]);
+        }
+    }, [account, chainId, loadMyTokens]);
+
 
     return (
         <main className="min-h-screen bg-gray-50">
@@ -215,7 +303,7 @@ export default function TokenizarPage() {
                         </span>
                     </Link>
                     <span className="text-lg text-gray-700 font-medium">
-                        
+
                     </span>
                 </div>
             </header>
@@ -244,29 +332,6 @@ export default function TokenizarPage() {
                             .
                         </div>
                     )}
-                    {/*}
-                    <div className="flex items-center gap-3">
-                        <button
-                            onClick={connectWallet}
-                            disabled={connecting || !!account}
-                            className="px-5 py-3 rounded-2xl bg-blue-600 text-white hover:bg-blue-700 font-semibold shadow disabled:opacity-60"
-                        >
-                            {connecting
-                                ? "Conectando..."
-                                : account
-                                    ? `Conectado a ${chainId === "0xaa36a7" ? "Sepolia" : chainId}`
-                                    : "Conectar MetaMask"}
-                        </button>
-
-                        {account && (
-                            <span className="text-sm text-gray-700 truncate">
-                                Conectado: <span className="font-mono">{account}</span>
-                                {chainId ? ` · Chain ID: ${chainId}` : null}
-                            </span>
-                        )}
-                    </div>
-*/}
-
                     <div className="flex items-center gap-3">
                         {/* Botón conectar / desconectar */}
                         <button
@@ -421,6 +486,51 @@ export default function TokenizarPage() {
                     </div>
 
                 </div>
+                <div className="mt-10">
+                    <h2 className="text-xl font-semibold mb-3">Mis tokens creados</h2>
+
+                    {!account && <p className="text-sm text-gray-600">Conecta tu cartera para ver tus tokens.</p>}
+
+                    {account && (
+                        <div className="space-y-3">
+                            {loadingTokens && <p className="text-sm text-gray-500">Cargando…</p>}
+                            {!loadingTokens && myAssets.length === 0 && (
+                                <p className="text-sm text-gray-600">No has creado tokens todavía.</p>
+                            )}
+
+                            {myAssets.map(asset => (
+                                <div key={asset.tokenAddress} className="bg-white border rounded-xl p-4 shadow-sm">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <div className="font-semibold">{asset.name} <span className="text-gray-500">({asset.symbol})</span></div>
+                                            <div className="text-xs text-gray-600">
+                                                Supply inicial: {asset.supply.toString()}
+                                            </div>
+                                            <div className="text-xs text-gray-600">
+                                                Mintable: {asset.isMintable ? "sí" : "no"} · Burnable: {asset.isBurnable ? "sí" : "no"} · Staking: {asset.stakingEnabled ? "sí" : "no"}
+                                            </div>
+                                        </div>
+                                        <div className="text-right space-y-1">
+                                            <a href={`https://sepolia.etherscan.io/address/${asset.tokenAddress}`} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">Token</a><br />
+                                            <a href={`https://sepolia.etherscan.io/address/${asset.vaultAddress}`} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">Vault</a><br />
+                                            {asset.stakePoolAddress && (
+                                                <a href={`https://sepolia.etherscan.io/address/${asset.stakePoolAddress}`} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">StakePool</a>
+                                            )}
+                                        </div>
+                                    </div>
+                                    {/* Botonera rápida para próximos pasos */}
+                                    <div className="mt-3 flex flex-wrap gap-2">
+                                        <Link href={`/token/${asset.tokenAddress}`} className="px-3 py-1.5 text-sm bg-gray-100 rounded-lg hover:bg-gray-200">Gestionar</Link>
+                                        {asset.stakingEnabled && asset.stakePoolAddress && (
+                                            <Link href={`/stake/${asset.stakePoolAddress}`} className="px-3 py-1.5 text-sm bg-gray-100 rounded-lg hover:bg-gray-200">Staking</Link>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
             </section>
         </main>
     );

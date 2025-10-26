@@ -209,7 +209,7 @@ export default function Page() {
                         <div className="text-gray-700 leading-relaxed text-lg max-w-3xl">
                             <p className="mb-4">
                                 👋 Soy <b>Juan Ignacio</b>, profesional de tecnología con más de 15 años de experiencia
-                                en diferentes areas de las Tecnologias de la información. En <b>needine.com</b> investigo mecánicas de tokenización
+                                en diferentes areas de las Tecnologias de la Información. En <b>needine.com</b> investigo mecánicas de tokenización
                                 mediante smart contracts en Solidity sobre redes Ethereum/EVM. Exploro seguridad, modelos de permisos,
                                 almacenamiento descentralizado (IPFS) e integración con wallets como MetaMask.
                             </p>
