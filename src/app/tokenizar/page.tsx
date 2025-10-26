@@ -1,7 +1,8 @@
 "use client";
 //import { Log, LogDescription } from "ethers";
 //import { BrowserProvider } from "ethers";
-
+import vaultAbi from "@/abis/VaultV2.json";
+import { ethers } from "ethers";
 import React, { useEffect, useState, useCallback } from "react";
 import { Log, LogDescription, BrowserProvider } from "ethers";
 
@@ -32,6 +33,11 @@ export default function TokenizarPage() {
     const [isBurnable, setIsBurnable] = useState(true);
     const [isStakable, setIsStakable] = useState(true);
 
+    //    const [mintTo, setMintTo] = useState("");
+    //    const [burnFrom, setBurnFrom] = useState("");
+    const [targetAddress, setTargetAddress] = useState("");
+    const [amount, setAmount] = useState("");
+
     const [myAssets, setMyAssets] = useState<MyAsset[]>([]);
     const [loadingTokens, setLoadingTokens] = useState(false);
     type MyAsset = {
@@ -46,6 +52,48 @@ export default function TokenizarPage() {
         stakingEnabled: boolean;
         owner: string;
     };
+    const handleMint = async (vaultAddress: string, to: string, amount: string) => {
+        try {
+            await ensureSepolia();
+            if (!window.ethereum) {
+                throw new Error("No se encontró un proveedor Ethereum");
+            }
+            const provider = new BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner();
+            const vault = new ethers.Contract(vaultAddress, vaultAbi, signer);
+
+            const decimals = 18; // si quieres leerlo dinámico lo hago luego 👌
+            const value = parseUnits(amount, decimals);
+
+            const tx = await vault.mint(to, value);
+            await tx.wait();
+            alert(`✅ Mint realizado! Tx: ${tx.hash}`);
+        } catch (err: unknown) {
+            if (err instanceof Error) alert("❌ Error mint: " + err.message);
+        }
+    };
+
+    const handleBurn = async (vaultAddress: string, from: string, amount: string) => {
+        try {
+            await ensureSepolia();
+            if (!window.ethereum) {
+                throw new Error("No se encontró un proveedor Ethereum");
+            }
+            const provider = new BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner();
+            const vault = new ethers.Contract(vaultAddress, vaultAbi, signer);
+
+            const decimals = 18;
+            const value = parseUnits(amount, decimals);
+
+            const tx = await vault.burn(from, value);
+            await tx.wait();
+            alert(`🔥 Burn realizado! Tx: ${tx.hash}`);
+        } catch (err: unknown) {
+            if (err instanceof Error) alert("❌ Error burn: " + err.message);
+        }
+    };
+
     const FACTORY_DEPLOY_BLOCK = 9489062; // Sepolia, 25-10-2025
     const loadMyTokens = useCallback(async (currentAccount: string) => {
         try {
@@ -524,6 +572,48 @@ export default function TokenizarPage() {
                                         {asset.stakingEnabled && asset.stakePoolAddress && (
                                             <Link href={`/stake/${asset.stakePoolAddress}`} className="px-3 py-1.5 text-sm bg-gray-100 rounded-lg hover:bg-gray-200">Staking</Link>
                                         )}
+                                    </div>
+                                    {/* ==== Mint & Burn QUICK ACTIONS ==== */}
+                                    <div className="mt-4 bg-gray-50 p-3 rounded-xl">
+                                        <div className="text-xs text-gray-600 mb-2">
+                                            Mint / Burn desde el Vault ({asset.vaultAddress.slice(0, 6)}…)
+                                        </div>
+
+                                        <div className="grid grid-cols-1 gap-2">
+                                            <input
+                                                className="border p-2 rounded text-sm"
+                                                placeholder="Dirección (vacío = tú)"
+                                                value={targetAddress}
+                                                onChange={(e) => setTargetAddress(e.target.value)}
+                                            />
+
+                                            <input
+                                                className="border p-2 rounded text-sm"
+                                                placeholder="Cantidad (ej: 100)"
+                                                value={amount}
+                                                onChange={(e) => setAmount(e.target.value)}
+                                            />
+
+                                            <div className="flex gap-2 mt-1">
+                                                {asset.isMintable && (
+                                                    <button
+                                                        onClick={() => handleMint(asset.vaultAddress, targetAddress || account!, amount)}
+                                                        className="px-3 py-1 rounded bg-green-500 hover:bg-green-600 text-white text-sm"
+                                                    >
+                                                        Mint
+                                                    </button>
+                                                )}
+
+                                                {asset.isBurnable && (
+                                                    <button
+                                                        onClick={() => handleBurn(asset.vaultAddress, targetAddress || account!, amount)}
+                                                        className="px-3 py-1 rounded bg-red-500 hover:bg-red-600 text-white text-sm"
+                                                    >
+                                                        Burn
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
