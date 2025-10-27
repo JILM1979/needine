@@ -82,6 +82,81 @@ export default function Page() {
                 </div>
             </section>
 
+            {/* QUIÉNES NECESITAN TOKENIZAR */}
+            <section id="clientes" className="mt-24 max-w-5xl mx-auto text-center px-6">
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                    ¿Quién se beneficia de nuestros servicios?
+                </h2>
+                <p className="text-gray-600 text-lg mb-12 max-w-2xl mx-auto">
+                    Los utility tokens permiten crear economías digitales alrededor de comunidades,
+                    acceso programable y gamificación sin representar valor financiero.
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+
+                    <Link
+                        href="/clientes/emprendedores-web3"
+                        className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition block cursor-pointer"
+                    >
+                        <h3 className="font-semibold text-lg mb-2 text-gray-900">🚀 Emprendedores Web3</h3>
+                        <p className="text-sm text-gray-700">
+                            Economías impulsadas por participación y acceso.
+                        </p>
+                    </Link>
+
+                    <Link
+                        href="/clientes/influencers-creadores"
+                        className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition block cursor-pointer"
+                    >
+                        <h3 className="font-semibold text-lg mb-2 text-gray-900">📣 Influencers & Creadores</h3>
+                        <p className="text-sm text-gray-700">
+                            Membership, perks y gamificación para comunidades.
+                        </p>
+                    </Link>
+
+                    <Link
+                        href="/clientes/comercios-marcas"
+                        className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition block cursor-pointer"
+                    >
+                        <h3 className="font-semibold text-lg mb-2 text-gray-900">🏪 Comercios y Marcas</h3>
+                        <p className="text-sm text-gray-700">
+                            Sistemas de fidelidad modernizados interoperables.
+                        </p>
+                    </Link>
+
+                    <Link
+                        href="/clientes/empresas-tradicionales"
+                        className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition block cursor-pointer"
+                    >
+                        <h3 className="font-semibold text-lg mb-2 text-gray-900">🏢 Empresas Tradicionales</h3>
+                        <p className="text-sm text-gray-700">
+                            Automatización de procesos y certificaciones internas.
+                        </p>
+                    </Link>
+
+                    <Link
+                        href="/clientes/comunidades-digitales"
+                        className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition block cursor-pointer"
+                    >
+                        <h3 className="font-semibold text-lg mb-2 text-gray-900">🧠 Comunidades Digitales</h3>
+                        <p className="text-sm text-gray-700">
+                            Gobernanza ligera, reputación y votaciones.
+                        </p>
+                    </Link>
+
+                    <Link
+                        href="/clientes/startups-defi"
+                        className="bg-white border border-gray-100 p-6 rounded-2xl shadow hover:shadow-md transition block cursor-pointer"
+                    >
+                        <h3 className="font-semibold text-lg mb-2 text-gray-900">📊 Startups Web3 & DeFi</h3>
+                        <p className="text-sm text-gray-700">
+                            Staking, accesos técnicos y experimentación económica.
+                        </p>
+                    </Link>
+
+                </div>
+            </section>
+
             {/* SERVICIOS */}
             <section id="servicios" className="mt-24 max-w-5xl mx-auto text-center px-6">
                 <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -158,7 +233,7 @@ export default function Page() {
             {/* CTA */}
             <section id="cta" className="mt-24 text-center py-16">
                 <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                    ¿Listo para crear tu token utility?
+                    Contacto
                 </h2>
                 <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
                     Needine se especializa en tokens digitales basados en utilidades, acceso,
@@ -208,12 +283,9 @@ export default function Page() {
                         {/* TEXTO */}
                         <div className="text-gray-700 leading-relaxed text-lg max-w-3xl">
                             <p className="mb-4">
-                                👋 Soy <b>Juan Ignacio</b>, profesional de tecnología con más de 15 años de experiencia
-                                en diferentes areas de las Tecnologias de la Información. En <b>needine.com</b> investigo mecánicas de tokenización
+                                👋 Soy <b>Juan Ignacio</b>, ingeniero informático, en <b>needine.com</b> investigo mecánicas de tokenización
                                 mediante smart contracts en Solidity sobre redes Ethereum/EVM. Exploro seguridad, modelos de permisos,
                                 almacenamiento descentralizado (IPFS) e integración con wallets como MetaMask.
-                            </p>
-                            <p className="mb-4">
                                 El desarrollo incluye la implementación de estándares ERC-20, ERC-721 y ERC-1155
                                 utilizando OpenZeppelin, pruebas automatizadas con Hardhat bajo enfoque TDD, e
                                 integración frontend/Web3 mediante Ethers.js para interacción transaccional y
