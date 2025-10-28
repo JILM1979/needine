@@ -283,21 +283,7 @@ export default function Page() {
                         {/* TEXTO */}
                         <div className="text-gray-700 leading-relaxed text-lg max-w-3xl">
                             <p className="mb-4">
-                                👋 Soy <b>Juan Ignacio</b>, ingeniero informático, en <b>needine.com</b> investigo mecánicas de tokenización
-                                mediante smart contracts en Solidity sobre redes Ethereum/EVM. Exploro seguridad, modelos de permisos,
-                                almacenamiento descentralizado (IPFS) e integración con wallets como MetaMask.
-                                El desarrollo incluye la implementación de estándares ERC-20, ERC-721 y ERC-1155
-                                utilizando OpenZeppelin, pruebas automatizadas con Hardhat bajo enfoque TDD, e
-                                integración frontend/Web3 mediante Ethers.js para interacción transaccional y
-                                lectura de estado on-chain.
-                            </p>
-                            <p className="mb-4">
-                                La línea de investigación actual incluye integración de modelos de
-                                <b> inteligencia artificial</b> para reputación dinámica, recomendaciones de
-                                contenido e interacciones de agentes autónomos dentro de ecosistemas Web3.
-                            </p>
-                            <p className="mb-4">
-                                Si tienes una idea o proyecto, estaré encantado de discutirla contigo. 😊
+                                👋 Soy <b>Juan Ignacio</b>, ingeniero informático en <b>needine.com</b>. Investigo tokenización con smart contracts en Solidity (Ethereum/EVM), seguridad, permisos, IPFS y wallets como MetaMask. Desarrollo ERC-20/721/1155 con OpenZeppelin, pruebas TDD en Hardhat e integración Web3 con Ethers.js.
                             </p>
                             <p className="font-semibold text-gray-900 mt-4">
                                 Este proyecto no representa activos financieros, propiedad real ni rendimientos.

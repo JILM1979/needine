@@ -37,6 +37,7 @@ export default function TokenizarPage() {
     //    const [burnFrom, setBurnFrom] = useState("");
     const [targetAddress, setTargetAddress] = useState("");
     const [amount, setAmount] = useState("");
+    const [activeTab, setActiveTab] = useState<"tokenizar" | "misTokens" | "staking">("tokenizar");
 
     const [myAssets, setMyAssets] = useState<MyAsset[]>([]);
     const [loadingTokens, setLoadingTokens] = useState(false);
@@ -358,268 +359,322 @@ export default function TokenizarPage() {
 
             <section className="max-w-xl mx-auto px-6 py-12">
                 <h1 className="text-3xl font-bold text-gray-900">
-                    Conectar con MetaMask
+                    Plataforma general de tokenización
                 </h1>
-                <p className="mt-2 text-gray-600">
-                    Aquí es donde, más adelante, los clientes podrán tokenizar.
-                    Primero conecta tu cartera.
-                </p>
-
-                <div className="mt-8 bg-white rounded-2xl border p-6 shadow-sm">
-                    {!hasProvider && (
-                        <div className="text-red-600 mb-4">
-                            No se detectó MetaMask.{" "}
-                            <a
-                                href="https://metamask.io/download/"
-                                target="_blank"
-                                rel="noreferrer"
-                                className="underline"
-                            >
-                                Instálalo aquí
-                            </a>
-                            .
-                        </div>
-                    )}
-                    <div className="flex items-center gap-3">
-                        {/* Botón conectar / desconectar */}
-                        <button
-                            onClick={account ? disconnectWallet : connectWallet}
-                            disabled={connecting}
-                            className={`px-5 py-3 rounded-2xl font-semibold shadow text-white disabled:opacity-60
-                                ${account ? "bg-red-600 hover:bg-red-700" : "bg-blue-600 hover:bg-blue-700"}`}
-                        >
-                            {connecting
-                                ? "Conectando..."
-                                : account
-                                    ? "Desconectar"
-                                    : "Conectar MetaMask"}
-                        </button>
-
-                        {/* Texto de conexión */}
-                        {account && (
-                            <span className="text-sm text-gray-700 truncate">
-                                Conectado: <span className="font-mono">{account}</span>
-                                {chainId ? ` · Chain ID: ${chainId}` : null}
-                            </span>
-                        )}
-
-                        {/* Botón para cambiar cuenta */}
-                        {account && (
-                            <button
-                                onClick={changeAccount}
-                                className="px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium"
-                            >
-                                Cambiar cuenta
-                            </button>
-                        )}
-                    </div>
-
-
-                    {error && <p className="mt-4 text-red-600">{error}</p>}
-
-                    <div className="mt-8 p-6 rounded-xl bg-gray-100">
-                        <h2 className="text-xl font-semibold mb-4">Tokenizar ahora</h2>
-                        <form onSubmit={handleCreateToken} className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium">Nombre del token</label>
-                                <input
-                                    value={tokenName}
-                                    onChange={(e) => setTokenName(e.target.value)}
-                                    className="w-full p-2 border rounded-lg"
-                                    placeholder="Ej: Token Needine Utilidades"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Símbolo</label>
-                                <input
-                                    value={tokenSymbol}
-                                    onChange={(e) => setTokenSymbol(e.target.value)}
-                                    className="w-full p-2 border rounded-lg"
-                                    placeholder="Ej: NEEDI"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Suministro inicial</label>
-                                <input
-                                    type="number"
-                                    min="1"
-                                    value={supply}
-                                    onChange={(e) => setSupply(e.target.value)}
-                                    className="w-full p-2 border rounded-lg"
-                                />
-                                <p className="text-xs text-gray-600 mt-1">
-                                    El suministro se ajustará a 18 decimales automáticamente.
-                                </p>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium">Descripcion</label>
-                                <input
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    className="w-full p-2 border rounded-lg"
-                                    placeholder="description"
-                                    required
-                                />
-                            </div>
-
-                            {/* === NUEVAS OPCIONES === */}
-                            <div className="grid grid-cols-2 gap-4">
-                                <label className="flex items-center gap-2 text-sm">
-                                    <input
-                                        type="checkbox"
-                                        checked={isMintable}
-                                        onChange={(e) => setIsMintable(e.target.checked)}
-                                    />
-                                    Token mintable
-                                </label>
-
-                                <label className="flex items-center gap-2 text-sm">
-                                    <input
-                                        type="checkbox"
-                                        checked={isBurnable}
-                                        onChange={(e) => setIsBurnable(e.target.checked)}
-                                    />
-                                    Token burnable
-                                </label>
-                                <label className="flex items-center gap-2 text-sm">
-                                    <input
-                                        type="checkbox"
-                                        checked={isStakable}
-                                        onChange={(e) => setIsStakable(e.target.checked)}
-                                    />
-                                    Token stakable
-                                </label>
-
-
-                            </div>
-
-                            <button
-                                type="submit"
-                                disabled={deploying}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50"
-                            >
-                                {deploying ? "Creando token..." : "Crear token"}
-                            </button>
-                        </form>
-
-                        {txHash && (
-                            <p className="mt-4 text-sm">
-                                Tx enviada:{" "}
-                                <a
-                                    href={`https://sepolia.etherscan.io/tx/${txHash}`}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="text-blue-600 underline"
-                                >
-                                    ver en Etherscan
-                                </a>
-                            </p>
-                        )}
-
-                        {tokenAddress && (
-                            <p className="mt-2 text-sm">
-                                Token desplegado:{" "}
-                                <a
-                                    href={`https://sepolia.etherscan.io/address/${tokenAddress}`}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="text-blue-600 underline"
-                                >
-                                    {tokenAddress}
-                                </a>
-                            </p>
-                        )}
-                    </div>
-
+                {/* ==== Navegación de pestañas ==== */}
+                <div className="flex border-b mt-6 mb-8">
+                    <button
+                        onClick={() => setActiveTab("tokenizar")}
+                        className={`px-4 py-2 font-medium border-b-2 transition-colors ${activeTab === "tokenizar"
+                            ? "border-blue-600 text-blue-600"
+                            : "border-transparent text-gray-600 hover:text-blue-600"
+                            }`}
+                    >
+                        Tokenizar
+                    </button>
+                    <button
+                        onClick={() => setActiveTab("misTokens")}
+                        className={`px-4 py-2 font-medium border-b-2 transition-colors ${activeTab === "misTokens"
+                            ? "border-blue-600 text-blue-600"
+                            : "border-transparent text-gray-600 hover:text-blue-600"
+                            }`}
+                    >
+                        Mis Tokens
+                    </button>
+                    <button
+                        onClick={() => setActiveTab("staking")}
+                        className={`px-4 py-2 font-medium border-b-2 transition-colors ${activeTab === "staking"
+                            ? "border-blue-600 text-blue-600"
+                            : "border-transparent text-gray-600 hover:text-blue-600"
+                            }`}
+                    >
+                        Staking Pools
+                    </button>
                 </div>
-                <div className="mt-10">
-                    <h2 className="text-xl font-semibold mb-3">Mis tokens creados</h2>
+                {activeTab === "tokenizar" && (
+                    <div className="mt-8 bg-white rounded-2xl border p-6 shadow-sm">
+                        {!hasProvider && (
+                            <div className="text-red-600 mb-4">
+                                No se detectó MetaMask.{" "}
+                                <a
+                                    href="https://metamask.io/download/"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="underline"
+                                >
+                                    Instálalo aquí
+                                </a>
+                                .
+                            </div>
+                        )}
+                        <div className="flex items-center gap-3">
+                            {/* Botón conectar / desconectar */}
+                            <button
+                                onClick={account ? disconnectWallet : connectWallet}
+                                disabled={connecting}
+                                className={`px-5 py-3 rounded-2xl font-semibold shadow text-white disabled:opacity-60
+                                ${account ? "bg-red-600 hover:bg-red-700" : "bg-blue-600 hover:bg-blue-700"}`}
+                            >
+                                {connecting
+                                    ? "Conectando..."
+                                    : account
+                                        ? "Desconectar"
+                                        : "Conectar MetaMask"}
+                            </button>
 
-                    {!account && <p className="text-sm text-gray-600">Conecta tu cartera para ver tus tokens.</p>}
-
-                    {account && (
-                        <div className="space-y-3">
-                            {loadingTokens && <p className="text-sm text-gray-500">Cargando…</p>}
-                            {!loadingTokens && myAssets.length === 0 && (
-                                <p className="text-sm text-gray-600">No has creado tokens todavía.</p>
+                            {/* Texto de conexión */}
+                            {account && (
+                                <span className="text-sm text-gray-700 truncate">
+                                    Conectado: <span className="font-mono">{account}</span>
+                                    {chainId ? ` · Chain ID: ${chainId}` : null}
+                                </span>
                             )}
 
-                            {myAssets.map(asset => (
-                                <div key={asset.tokenAddress} className="bg-white border rounded-xl p-4 shadow-sm">
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <div className="font-semibold">{asset.name} <span className="text-gray-500">({asset.symbol})</span></div>
-                                            <div className="text-xs text-gray-600">
-                                                Supply inicial: {asset.supply.toString()}
+                            {/* Botón para cambiar cuenta */}
+                            {account && (
+                                <button
+                                    onClick={changeAccount}
+                                    className="px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium"
+                                >
+                                    Cambiar cuenta
+                                </button>
+                            )}
+                        </div>
+
+
+                        {error && <p className="mt-4 text-red-600">{error}</p>}
+
+                        <div className="mt-8 p-6 rounded-xl bg-gray-100">
+                            <h2 className="text-xl font-semibold mb-4">Tokenizar ahora</h2>
+                            <form onSubmit={handleCreateToken} className="space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium">Nombre del token</label>
+                                    <input
+                                        value={tokenName}
+                                        onChange={(e) => setTokenName(e.target.value)}
+                                        className="w-full p-2 border rounded-lg"
+                                        placeholder="Ej: Token Needine Utilidades"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium">Símbolo</label>
+                                    <input
+                                        value={tokenSymbol}
+                                        onChange={(e) => setTokenSymbol(e.target.value)}
+                                        className="w-full p-2 border rounded-lg"
+                                        placeholder="Ej: NEEDI"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium">Suministro inicial</label>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        value={supply}
+                                        onChange={(e) => setSupply(e.target.value)}
+                                        className="w-full p-2 border rounded-lg"
+                                    />
+                                    <p className="text-xs text-gray-600 mt-1">
+                                        El suministro se ajustará a 18 decimales automáticamente.
+                                    </p>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium">Descripcion</label>
+                                    <input
+                                        value={description}
+                                        onChange={(e) => setDescription(e.target.value)}
+                                        className="w-full p-2 border rounded-lg"
+                                        placeholder="description"
+                                        required
+                                    />
+                                </div>
+
+                                {/* === NUEVAS OPCIONES === */}
+                                <div className="grid grid-cols-2 gap-4">
+                                    <label className="flex items-center gap-2 text-sm">
+                                        <input
+                                            type="checkbox"
+                                            checked={isMintable}
+                                            onChange={(e) => setIsMintable(e.target.checked)}
+                                        />
+                                        Token mintable
+                                    </label>
+
+                                    <label className="flex items-center gap-2 text-sm">
+                                        <input
+                                            type="checkbox"
+                                            checked={isBurnable}
+                                            onChange={(e) => setIsBurnable(e.target.checked)}
+                                        />
+                                        Token burnable
+                                    </label>
+                                    <label className="flex items-center gap-2 text-sm">
+                                        <input
+                                            type="checkbox"
+                                            checked={isStakable}
+                                            onChange={(e) => setIsStakable(e.target.checked)}
+                                        />
+                                        Token stakable
+                                    </label>
+
+
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    disabled={deploying}
+                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50"
+                                >
+                                    {deploying ? "Creando token..." : "Crear token"}
+                                </button>
+                            </form>
+                            {/* === Explicación del pago simbólico === */}
+                            <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl text-sm text-gray-700">
+                                <p className="font-semibold mb-2">ℹ️ Sobre el coste de tokenización (10 € en Ethereum)</p>
+                                <p className="mb-2">
+                                    Este proyecto, <strong>needine.com</strong>, forma parte de una investigación independiente sobre
+                                    modelos de tokenización y comportamiento de adopción en redes blockchain.
+                                </p>
+                                <p className="mb-2">
+                                    El cobro simbólico de <strong>10 € en Ethereum</strong> no constituye una venta comercial ni una inversión,
+                                    sino una <em>contribución voluntaria</em> destinada a cubrir los costes de gas, infraestructura y pruebas
+                                    técnicas, además de evaluar si los usuarios están realmente dispuestos a pagar por un servicio de tokenización.
+                                </p>
+                                <p className="text-xs text-gray-600">
+                                    Participar implica apoyar una investigación en curso —no se ofrece ningún rendimiento ni producto financiero,
+                                    y el servicio se encuentra en fase experimental.
+                                </p>
+                            </div>
+                            {txHash && (
+                                <p className="mt-4 text-sm">
+                                    Tx enviada:{" "}
+                                    <a
+                                        href={`https://sepolia.etherscan.io/tx/${txHash}`}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="text-blue-600 underline"
+                                    >
+                                        ver en Etherscan
+                                    </a>
+                                </p>
+                            )}
+
+                            {tokenAddress && (
+                                <p className="mt-2 text-sm">
+                                    Token desplegado:{" "}
+                                    <a
+                                        href={`https://sepolia.etherscan.io/address/${tokenAddress}`}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="text-blue-600 underline"
+                                    >
+                                        {tokenAddress}
+                                    </a>
+                                </p>
+                            )}
+                        </div>
+
+                    </div>
+                )}
+                {activeTab === "misTokens" && (
+                    <div className="mt-10">
+                        <h2 className="text-xl font-semibold mb-3">Mis tokens creados</h2>
+
+                        {!account && <p className="text-sm text-gray-600">Conecta tu cartera para ver tus tokens.</p>}
+
+                        {account && (
+                            <div className="space-y-3">
+                                {loadingTokens && <p className="text-sm text-gray-500">Cargando…</p>}
+                                {!loadingTokens && myAssets.length === 0 && (
+                                    <p className="text-sm text-gray-600">No has creado tokens todavía.</p>
+                                )}
+
+                                {myAssets.map(asset => (
+                                    <div key={asset.tokenAddress} className="bg-white border rounded-xl p-4 shadow-sm">
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <div className="font-semibold">{asset.name} <span className="text-gray-500">({asset.symbol})</span></div>
+                                                <div className="text-xs text-gray-600">
+                                                    Supply inicial: {asset.supply.toString()}
+                                                </div>
+                                                <div className="text-xs text-gray-600">
+                                                    Mintable: {asset.isMintable ? "sí" : "no"} · Burnable: {asset.isBurnable ? "sí" : "no"} · Staking: {asset.stakingEnabled ? "sí" : "no"}
+                                                </div>
                                             </div>
-                                            <div className="text-xs text-gray-600">
-                                                Mintable: {asset.isMintable ? "sí" : "no"} · Burnable: {asset.isBurnable ? "sí" : "no"} · Staking: {asset.stakingEnabled ? "sí" : "no"}
+                                            <div className="text-right space-y-1">
+                                                <a href={`https://sepolia.etherscan.io/address/${asset.tokenAddress}`} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">Token</a><br />
+                                                <a href={`https://sepolia.etherscan.io/address/${asset.vaultAddress}`} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">Vault</a><br />
+                                                {asset.stakePoolAddress && (
+                                                    <a href={`https://sepolia.etherscan.io/address/${asset.stakePoolAddress}`} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">StakePool</a>
+                                                )}
                                             </div>
                                         </div>
-                                        <div className="text-right space-y-1">
-                                            <a href={`https://sepolia.etherscan.io/address/${asset.tokenAddress}`} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">Token</a><br />
-                                            <a href={`https://sepolia.etherscan.io/address/${asset.vaultAddress}`} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">Vault</a><br />
-                                            {asset.stakePoolAddress && (
-                                                <a href={`https://sepolia.etherscan.io/address/${asset.stakePoolAddress}`} target="_blank" rel="noreferrer" className="text-blue-600 underline text-sm">StakePool</a>
+                                        {/* Botonera rápida para próximos pasos */}
+                                        <div className="mt-3 flex flex-wrap gap-2">
+                                            <Link href={`/token/${asset.tokenAddress}`} className="px-3 py-1.5 text-sm bg-gray-100 rounded-lg hover:bg-gray-200">Gestionar</Link>
+                                            {asset.stakingEnabled && asset.stakePoolAddress && (
+                                                <Link href={`/stake/${asset.stakePoolAddress}`} className="px-3 py-1.5 text-sm bg-gray-100 rounded-lg hover:bg-gray-200">Staking</Link>
                                             )}
                                         </div>
-                                    </div>
-                                    {/* Botonera rápida para próximos pasos */}
-                                    <div className="mt-3 flex flex-wrap gap-2">
-                                        <Link href={`/token/${asset.tokenAddress}`} className="px-3 py-1.5 text-sm bg-gray-100 rounded-lg hover:bg-gray-200">Gestionar</Link>
-                                        {asset.stakingEnabled && asset.stakePoolAddress && (
-                                            <Link href={`/stake/${asset.stakePoolAddress}`} className="px-3 py-1.5 text-sm bg-gray-100 rounded-lg hover:bg-gray-200">Staking</Link>
-                                        )}
-                                    </div>
-                                    {/* ==== Mint & Burn QUICK ACTIONS ==== */}
-                                    <div className="mt-4 bg-gray-50 p-3 rounded-xl">
-                                        <div className="text-xs text-gray-600 mb-2">
-                                            Mint / Burn desde el Vault ({asset.vaultAddress.slice(0, 6)}…)
-                                        </div>
+                                        {/* ==== Mint & Burn QUICK ACTIONS ==== */}
+                                        <div className="mt-4 bg-gray-50 p-3 rounded-xl">
+                                            <div className="text-xs text-gray-600 mb-2">
+                                                Mint / Burn desde el Vault ({asset.vaultAddress.slice(0, 6)}…)
+                                            </div>
 
-                                        <div className="grid grid-cols-1 gap-2">
-                                            <input
-                                                className="border p-2 rounded text-sm"
-                                                placeholder="Dirección (vacío = tú)"
-                                                value={targetAddress}
-                                                onChange={(e) => setTargetAddress(e.target.value)}
-                                            />
+                                            <div className="grid grid-cols-1 gap-2">
+                                                <input
+                                                    className="border p-2 rounded text-sm"
+                                                    placeholder="Dirección (vacío = tú)"
+                                                    value={targetAddress}
+                                                    onChange={(e) => setTargetAddress(e.target.value)}
+                                                />
 
-                                            <input
-                                                className="border p-2 rounded text-sm"
-                                                placeholder="Cantidad (ej: 100)"
-                                                value={amount}
-                                                onChange={(e) => setAmount(e.target.value)}
-                                            />
+                                                <input
+                                                    className="border p-2 rounded text-sm"
+                                                    placeholder="Cantidad (ej: 100)"
+                                                    value={amount}
+                                                    onChange={(e) => setAmount(e.target.value)}
+                                                />
 
-                                            <div className="flex gap-2 mt-1">
-                                                {asset.isMintable && (
-                                                    <button
-                                                        onClick={() => handleMint(asset.vaultAddress, targetAddress || account!, amount)}
-                                                        className="px-3 py-1 rounded bg-green-500 hover:bg-green-600 text-white text-sm"
-                                                    >
-                                                        Mint
-                                                    </button>
-                                                )}
+                                                <div className="flex gap-2 mt-1">
+                                                    {asset.isMintable && (
+                                                        <button
+                                                            onClick={() => handleMint(asset.vaultAddress, targetAddress || account!, amount)}
+                                                            className="px-3 py-1 rounded bg-green-500 hover:bg-green-600 text-white text-sm"
+                                                        >
+                                                            Mint
+                                                        </button>
+                                                    )}
 
-                                                {asset.isBurnable && (
-                                                    <button
-                                                        onClick={() => handleBurn(asset.vaultAddress, targetAddress || account!, amount)}
-                                                        className="px-3 py-1 rounded bg-red-500 hover:bg-red-600 text-white text-sm"
-                                                    >
-                                                        Burn
-                                                    </button>
-                                                )}
+                                                    {asset.isBurnable && (
+                                                        <button
+                                                            onClick={() => handleBurn(asset.vaultAddress, targetAddress || account!, amount)}
+                                                            className="px-3 py-1 rounded bg-red-500 hover:bg-red-600 text-white text-sm"
+                                                        >
+                                                            Burn
+                                                        </button>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                )}
+                {activeTab === "staking" && (
+                    <div className="mt-10">
+                        <h2 className="text-xl font-semibold mb-3">Staking Pools (próximamente)</h2>
+                        <p className="text-gray-600">
+                            Aquí podrás ver y participar en los pools de staking de otros clientes.
+
+                        </p>
+                    </div>
+                )}
 
             </section>
         </main>
