@@ -23,7 +23,7 @@ export default function StakePage({ params }: { params: Promise<{ pool: string }
 
     const [tokenName, setTokenName] = useState("");
 
-    const stakePoolAbi = stakePoolArtifact.abi;
+    const stakePoolAbi = stakePoolArtifact;
     const connect = async () => {
         if (!window.ethereum) {
             throw new Error("No se encontró un proveedor Ethereum");
