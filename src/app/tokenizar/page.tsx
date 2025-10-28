@@ -12,6 +12,10 @@ import factoryAbi from "@/abis/AssetTokenFactory.json";
 import { FACTORY_ADDRESS, SEPOLIA, ensureSepolia } from "@/lib/chain";
 import { getFactoryWithSigner } from "@/lib/ethers";
 import { parseUnits } from "ethers";
+import TokenV2Abi from "@/abis/TokenV2.json";
+import OwnerDocs from "@/app/components/OwnerDocs";
+import TokenizeDocs from "@/app/components/TokenizeDocs";
+
 
 export default function TokenizarPage() {
     const [account, setAccount] = useState<string | null>(null);
@@ -19,7 +23,9 @@ export default function TokenizarPage() {
     const [hasProvider, setHasProvider] = useState<boolean>(false);
     const [connecting, setConnecting] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-
+    const [feeBps, setFeeBps] = useState("");
+    const [feeRecipient, setFeeRecipient] = useState("");
+    const [exemptAddress, setExemptAddress] = useState("");
     const [tokenName, setTokenName] = useState("");
     const [tokenSymbol, setTokenSymbol] = useState("");
     const [description, setDescription] = useState("");
@@ -52,6 +58,74 @@ export default function TokenizarPage() {
         isBurnable: boolean;
         stakingEnabled: boolean;
         owner: string;
+    };
+    const handleSetFeeBps = async (tokenAddress: string) => {
+        try {
+            await ensureSepolia();
+            if (!window.ethereum) {
+                throw new Error("No se encontró un proveedor Ethereum");
+            }
+            const provider = new BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner();
+            const token = new ethers.Contract(tokenAddress, TokenV2Abi, signer);
+            const tx = await token.setFeeBps(Number(feeBps));
+            await tx.wait();
+            alert(`✅ Fee actualizado a ${feeBps} bps`);
+        }
+        catch (err: unknown) {
+            if (err instanceof Error) {
+                alert("❌ Error: " + err.message);
+            } else {
+                console.error("Unknown error:", err);
+                alert("❌ Error desconocido al ejecutar la operación.");
+            }
+        }
+    };
+
+    const handleSetFeeRecipient = async (tokenAddress: string) => {
+        try {
+            await ensureSepolia();
+            if (!window.ethereum) {
+                throw new Error("No se encontró un proveedor Ethereum");
+            }
+            const provider = new BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner();
+            const token = new ethers.Contract(tokenAddress, TokenV2Abi, signer);
+            const tx = await token.setFeeRecipient(feeRecipient);
+            await tx.wait();
+            alert(`✅ FeeRecipient actualizado a ${feeRecipient}`);
+        }
+        catch (err: unknown) {
+            if (err instanceof Error) {
+                alert("❌ Error: " + err.message);
+            } else {
+                console.error("Unknown error:", err);
+                alert("❌ Error desconocido al ejecutar la operación.");
+            }
+        }
+    };
+
+    const handleSetFeeExempt = async (tokenAddress: string, addr: string, exempt: boolean) => {
+        try {
+            await ensureSepolia();
+            if (!window.ethereum) {
+                throw new Error("No se encontró un proveedor Ethereum");
+            }
+            const provider = new BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner();
+            const token = new ethers.Contract(tokenAddress, TokenV2Abi, signer);
+            const tx = await token.setFeeExempt(addr, exempt);
+            await tx.wait();
+            alert(`✅ Exención ${exempt ? "agregada" : "removida"} para ${addr}`);
+        }
+        catch (err: unknown) {
+            if (err instanceof Error) {
+                alert("❌ Error: " + err.message);
+            } else {
+                console.error("Unknown error:", err);
+                alert("❌ Error desconocido al ejecutar la operación.");
+            }
+        }
     };
     const handleMint = async (vaultAddress: string, to: string, amount: string) => {
         try {
@@ -547,6 +621,8 @@ export default function TokenizarPage() {
                                     y el servicio se encuentra en fase experimental.
                                 </p>
                             </div>
+                            {/* 📘 Documentación de uso */}
+                            <TokenizeDocs />
                             {txHash && (
                                 <p className="mt-4 text-sm">
                                     Tx enviada:{" "}
@@ -613,12 +689,12 @@ export default function TokenizarPage() {
                                         </div>
                                         {/* Botonera rápida para próximos pasos */}
                                         <div className="mt-3 flex flex-wrap gap-2">
-                                            <Link href={`/token/${asset.tokenAddress}`} className="px-3 py-1.5 text-sm bg-gray-100 rounded-lg hover:bg-gray-200">Gestionar</Link>
                                             {asset.stakingEnabled && asset.stakePoolAddress && (
                                                 <Link href={`/stake/${asset.stakePoolAddress}`} className="px-3 py-1.5 text-sm bg-gray-100 rounded-lg hover:bg-gray-200">Staking</Link>
                                             )}
                                         </div>
                                         {/* ==== Mint & Burn QUICK ACTIONS ==== */}
+
                                         <div className="mt-4 bg-gray-50 p-3 rounded-xl">
                                             <div className="text-xs text-gray-600 mb-2">
                                                 Mint / Burn desde el Vault ({asset.vaultAddress.slice(0, 6)}…)
@@ -660,8 +736,69 @@ export default function TokenizarPage() {
                                                 </div>
                                             </div>
                                         </div>
+                                        {/* ==== Owner Management Actions ==== */}
+                                        <div className="mt-4 bg-blue-50 p-3 rounded-xl">
+                                            <div className="text-xs text-blue-600 mb-2 font-semibold">
+                                                🔧 Gestión del Token (solo Owner)
+                                            </div>
+
+                                            {/* Campos de configuración */}
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                                <input
+                                                    className="border p-2 rounded text-sm"
+                                                    placeholder="Nuevo fee (bps, máx 500)"
+                                                    value={feeBps}
+                                                    onChange={(e) => setFeeBps(e.target.value)}
+                                                />
+                                                <button
+                                                    onClick={() => handleSetFeeBps(asset.tokenAddress)}
+                                                    className="px-3 py-1.5 rounded bg-blue-600 hover:bg-blue-700 text-white text-sm"
+                                                >
+                                                    Actualizar Fee
+                                                </button>
+
+                                                <input
+                                                    className="border p-2 rounded text-sm mt-2 md:mt-0"
+                                                    placeholder="Nuevo feeRecipient"
+                                                    value={feeRecipient}
+                                                    onChange={(e) => setFeeRecipient(e.target.value)}
+                                                />
+                                                <button
+                                                    onClick={() => handleSetFeeRecipient(asset.tokenAddress)}
+                                                    className="px-3 py-1.5 rounded bg-indigo-600 hover:bg-indigo-700 text-white text-sm"
+                                                >
+                                                    Cambiar FeeRecipient
+                                                </button>
+                                            </div>
+
+                                            <div className="mt-3">
+                                                <input
+                                                    className="border p-2 rounded text-sm"
+                                                    placeholder="Dirección para exención de fee"
+                                                    value={exemptAddress}
+                                                    onChange={(e) => setExemptAddress(e.target.value)}
+                                                />
+                                                <div className="flex gap-2 mt-2">
+                                                    <button
+                                                        onClick={() => handleSetFeeExempt(asset.tokenAddress, exemptAddress, true)}
+                                                        className="px-3 py-1 rounded bg-green-500 hover:bg-green-600 text-white text-sm"
+                                                    >
+                                                        Eximir
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleSetFeeExempt(asset.tokenAddress, exemptAddress, false)}
+                                                        className="px-3 py-1 rounded bg-red-500 hover:bg-red-600 text-white text-sm"
+                                                    >
+                                                        Quitar exención
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 ))}
+                                {/* 📘 Documentación del owner */}
+                                <OwnerDocs />
                             </div>
                         )}
                     </div>
