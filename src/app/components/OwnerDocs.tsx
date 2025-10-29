@@ -10,8 +10,8 @@ export default function OwnerDocs() {
 
       <p className="text-sm text-gray-600 mb-6">
         Esta sección permite al <strong>propietario (owner)</strong> de cada token desplegado
-        gestionar y administrar los parámetros de su activo, su bóveda (<code>Vault</code>) y su
-        pool de staking (<code>StakePool</code>), si aplica.
+        gestionar y administrar los parámetros de su activo, su bóveda (<code>Vault</code>), su
+        pool de staking (<code>StakePool</code>) y su contrato de liberación de tokens (<code>Vesting</code>).
       </p>
 
       <div className="space-y-6 text-sm leading-relaxed">
@@ -25,6 +25,61 @@ export default function OwnerDocs() {
             <li>Abre la pestaña <strong>“Mis tokens creados”</strong>.</li>
             <li>Se listarán automáticamente todos los tokens que hayas desplegado desde el Factory.</li>
           </ol>
+        </div>
+
+        {/* --- NUEVO: Vesting Management --- */}
+        <div>
+          <h3 className="text-lg font-semibold text-purple-700 mb-2">
+            🎁 Bloque: “Vesting Management (solo Owner)”
+          </h3>
+
+          <p>
+            Permite configurar <strong>planes de liberación programada de tokens</strong> para tus colaboradores,
+            inversores o cualquier dirección beneficiaria. El contrato <code>Vesting</code> retiene los tokens
+            y los va liberando automáticamente con el paso del tiempo.
+          </p>
+
+          <ul className="list-disc ml-6 mt-2 space-y-1">
+            <li>
+              <strong>Beneficiario:</strong> dirección que recibirá los tokens conforme avanza el tiempo.
+            </li>
+            <li>
+              <strong>Monto:</strong> cantidad total de tokens a liberar (convertidos a 18 decimales automáticamente).
+            </li>
+            <li>
+              <strong>Start (timestamp UNIX):</strong> momento de inicio del vesting (por ejemplo, <code>{Math.floor(Date.now() / 1000)}</code> para “ahora”).
+            </li>
+            <li>
+              <strong>Cliff (segundos):</strong> periodo inicial durante el cual no se libera nada (bloqueo temporal).
+            </li>
+            <li>
+              <strong>Duración total:</strong> tiempo total (en segundos) hasta que se libere el 100 % del monto.
+            </li>
+          </ul>
+
+          <div className="mt-3">
+            <p className="text-gray-700 mb-1">
+              🟪 <strong>Crear Vesting:</strong> ejecuta <code>createSchedule()</code>. El contrato retiene los tokens y genera un nuevo
+              plan de liberación para el beneficiario.
+            </p>
+            <p className="text-gray-700 mb-1">
+              🟩 <strong>Liberar:</strong> ejecuta <code>release(id)</code>. El beneficiario (o el owner actuando por él) reclama los tokens ya desbloqueados según el tiempo transcurrido.
+            </p>
+            <p className="text-gray-700">
+              🟥 <strong>Revocar:</strong> ejecuta <code>revoke(user, id)</code>. Cancela el plan de vesting, recuperando los tokens no liberados.
+              Los tokens ya liberados quedan reclamables por el beneficiario.
+            </p>
+          </div>
+
+          <p className="text-xs text-gray-500 mt-2">
+            💡 Consejo: puedes calcular fácilmente los segundos de un mes (~2.592.000 s) o un año (~31.536.000 s).
+            Por ejemplo: cliff de 3 meses = <code>7776000</code> s.
+          </p>
+
+          <p className="text-xs text-gray-500 mt-1">
+            Todos los vestings creados se almacenan on-chain. El contrato garantiza que los tokens
+            solo se liberen de forma lineal y nunca antes del cliff.
+          </p>
         </div>
 
         {/* --- Mint/Burn --- */}
@@ -92,7 +147,7 @@ export default function OwnerDocs() {
           </ul>
         </div>
 
-        {/* --- Mensajes y flujo --- */}
+        {/* --- Flujo de uso --- */}
         <div>
           <h3 className="text-lg font-semibold text-blue-700 mb-2">
             🔹 Flujo de uso recomendado
@@ -103,6 +158,7 @@ export default function OwnerDocs() {
             <li>Probar <strong>Mint</strong> o <strong>Burn</strong> según permisos.</li>
             <li>Ajustar <strong>Fee</strong> y <strong>FeeRecipient</strong>.</li>
             <li>Marcar direcciones internas como <strong>exentas</strong>.</li>
+            <li>Configurar planes en <strong>Vesting Management</strong> para entregar tokens bloqueados con cronograma.</li>
             <li>(Opcional) Configurar recompensas en el <strong>StakePool</strong>.</li>
           </ol>
         </div>
@@ -120,11 +176,16 @@ export default function OwnerDocs() {
             <tbody>
               <tr className="border-b">
                 <td className="p-2 font-medium">Owner del Token</td>
-                <td className="p-2">Puede ejecutar funciones de <code>setFee*</code>, <code>mint</code>, <code>burn</code>.</td>
+                <td className="p-2">
+                  Puede ejecutar funciones de <code>setFee*</code>, <code>mint</code>, <code>burn</code>,
+                  <code>createSchedule</code>, <code>revoke</code> y <code>release</code> en el contrato Vesting.
+                </td>
               </tr>
               <tr>
-                <td className="p-2 font-medium">Usuarios normales</td>
-                <td className="p-2">Pueden transferir tokens o participar en staking.</td>
+                <td className="p-2 font-medium">Beneficiarios</td>
+                <td className="p-2">
+                  Pueden consultar y liberar sus tokens disponibles mediante <code>release()</code>.
+                </td>
               </tr>
             </tbody>
           </table>
@@ -134,9 +195,10 @@ export default function OwnerDocs() {
         <div>
           <h3 className="text-lg font-semibold text-blue-700 mb-2">📡 Eventos relevantes</h3>
           <ul className="list-disc ml-6 space-y-1">
-            <li><code>AssetTokenCreated</code> — se emite al crear un nuevo token.</li>
+            <li><code>AssetTokenCreated</code> — se emite al crear un nuevo token y sus contratos asociados.</li>
             <li><code>Minted</code> y <code>Burned</code> — operaciones de Vault.</li>
             <li><code>Transfer</code> — transferencias y cobro de fee.</li>
+            <li><code>VestingCreated</code>, <code>Released</code>, <code>Revoked</code> — operaciones del contrato Vesting.</li>
           </ul>
         </div>
 
@@ -146,5 +208,6 @@ export default function OwnerDocs() {
         </p>
       </div>
     </section>
+
   );
 }

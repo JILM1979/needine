@@ -262,7 +262,7 @@ export default function Page() {
             <AccordionFAQ />
 
             {/* SOBRE EL CREADOR */}
-
+{/*
             <section id="about" className="mt-24 bg-white py-16 px-6 border-t">
                 <div className="max-w-5xl mx-auto text-center">
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
@@ -270,7 +270,6 @@ export default function Page() {
                     </h2>
 
                     <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-                        {/* FOTO */}
                         <div className="w-32 h-32 md:w-40 md:h-40 mx-auto overflow-hidden rounded-full border-4 border-blue-500">
                             <img
                                 src="/juani.png"
@@ -280,7 +279,7 @@ export default function Page() {
 
                         </div>
 
-                        {/* TEXTO */}
+                         
                         <div className="text-gray-700 leading-relaxed text-lg max-w-3xl">
                             <p className="mb-4">
                                 👋 Soy <b>Juan Ignacio</b>, ingeniero informático en <b>needine.com</b>. Investigo tokenización con smart contracts en Solidity (Ethereum/EVM), seguridad, permisos, IPFS y wallets como MetaMask. Desarrollo ERC-20/721/1155 con OpenZeppelin, pruebas TDD en Hardhat e integración Web3 con Ethers.js.
@@ -307,7 +306,7 @@ export default function Page() {
                     </div>
                 </div>
             </section>
-
+*/}
         </main>
     );
 }

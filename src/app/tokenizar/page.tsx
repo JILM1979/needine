@@ -13,6 +13,7 @@ import { FACTORY_ADDRESS, SEPOLIA, ensureSepolia } from "@/lib/chain";
 import { getFactoryWithSigner } from "@/lib/ethers";
 import { parseUnits } from "ethers";
 import TokenV2Abi from "@/abis/TokenV2.json";
+import VestingAbi from "@/abis/Vesting.json";
 import OwnerDocs from "@/app/components/OwnerDocs";
 import TokenizeDocs from "@/app/components/TokenizeDocs";
 
@@ -47,6 +48,13 @@ export default function TokenizarPage() {
 
     const [myAssets, setMyAssets] = useState<MyAsset[]>([]);
     const [loadingTokens, setLoadingTokens] = useState(false);
+    const [vestingBeneficiary, setVestingBeneficiary] = useState("");
+    const [vestingAmount, setVestingAmount] = useState("");
+    const [vestingStart, setVestingStart] = useState("");
+    const [vestingCliff, setVestingCliff] = useState("");
+    const [vestingDuration, setVestingDuration] = useState("");
+    const [vestingId, setVestingId] = useState("");
+    /*
     type MyAsset = {
         tokenAddress: string;
         vaultAddress: string;
@@ -58,6 +66,100 @@ export default function TokenizarPage() {
         isBurnable: boolean;
         stakingEnabled: boolean;
         owner: string;
+    };*/
+    type MyAsset = {
+        tokenAddress: string;
+        vaultAddress: string;
+        stakePoolAddress: string | null;
+        vestingAddress: string;
+        name: string;
+        symbol: string;
+        supply: bigint;
+        isMintable: boolean;
+        isBurnable: boolean;
+        stakingEnabled: boolean;
+        owner: string;
+    };
+    const handleCreateVesting = async (
+        vestingAddress: string,
+        beneficiary: string,
+        start: number,
+        cliff: number,
+        duration: number,
+        amount: string
+    ) => {
+        try {
+            await ensureSepolia();
+            if (!window.ethereum) throw new Error("No se encontró un proveedor Ethereum");
+            const provider = new BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner();
+            const vesting = new ethers.Contract(vestingAddress, VestingAbi, signer);
+
+            const decimals = 18;
+            const value = parseUnits(amount, decimals);
+
+            const tx = await vesting.createSchedule(
+                beneficiary,
+                start,
+                cliff,
+                duration,
+                value
+            );
+            await tx.wait();
+            alert("✅ Vesting creado correctamente");
+        }
+        catch (err: unknown) {
+            if (err instanceof Error) {
+                alert("❌ Error: " + err.message);
+            } else {
+                console.error("Unknown error:", err);
+                alert("❌ Error desconocido al ejecutar la operación.");
+            }
+        }
+    };
+
+    const handleRelease = async (vestingAddress: string, id: number) => {
+        try {
+            await ensureSepolia();
+            if (!window.ethereum) throw new Error("No se encontró un proveedor Ethereum");
+            const provider = new BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner();
+            const vesting = new ethers.Contract(vestingAddress, VestingAbi, signer);
+
+            const tx = await vesting.release(id);
+            await tx.wait();
+            alert("✅ Tokens liberados correctamente");
+        }
+        catch (err: unknown) {
+            if (err instanceof Error) {
+                alert("❌ Error: " + err.message);
+            } else {
+                console.error("Unknown error:", err);
+                alert("❌ Error desconocido al ejecutar la operación.");
+            }
+        }
+    };
+
+    const handleRevoke = async (vestingAddress: string, user: string, id: number) => {
+        try {
+            await ensureSepolia();
+            if (!window.ethereum) throw new Error("No se encontró un proveedor Ethereum");
+            const provider = new BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner();
+            const vesting = new ethers.Contract(vestingAddress, VestingAbi, signer);
+
+            const tx = await vesting.revoke(user, id);
+            await tx.wait();
+            alert("✅ Vesting revocado correctamente");
+        }
+        catch (err: unknown) {
+            if (err instanceof Error) {
+                alert("❌ Error: " + err.message);
+            } else {
+                console.error("Unknown error:", err);
+                alert("❌ Error desconocido al ejecutar la operación.");
+            }
+        }
     };
     const handleSetFeeBps = async (tokenAddress: string) => {
         try {
@@ -213,6 +315,7 @@ export default function TokenizarPage() {
                         args.stakePoolAddress === "0x0000000000000000000000000000000000000000"
                             ? null
                             : (args.stakePoolAddress as string),
+                    vestingAddress: args.vestingAddress as string,
                     name: args.name as string,
                     symbol: args.symbol as string,
                     supply: args.supply as bigint,
@@ -221,7 +324,6 @@ export default function TokenizarPage() {
                     stakingEnabled: args.stakingEnabled as boolean,
                     owner: args.owner as string,
                 }));
-
             const uniq: MyAsset[] = Array.from(
                 new Map(parsed.map((a: MyAsset) => [a.tokenAddress.toLowerCase(), a])).values()
             );
@@ -692,6 +794,96 @@ export default function TokenizarPage() {
                                             {asset.stakingEnabled && asset.stakePoolAddress && (
                                                 <Link href={`/stake/${asset.stakePoolAddress}`} className="px-3 py-1.5 text-sm bg-gray-100 rounded-lg hover:bg-gray-200">Staking</Link>
                                             )}
+                                        </div>
+                                        {/* ==== Vesting Management ==== */}
+                                        <div className="mt-4 bg-purple-50 p-3 rounded-xl">
+                                            <div className="text-xs text-purple-700 mb-2 font-semibold">
+                                                🎁 Vesting Management (solo Owner)
+                                            </div>
+
+                                            <p className="text-xs text-gray-600 mb-2">
+                                                Contrato Vesting:{" "}
+                                                <a
+                                                    href={`https://sepolia.etherscan.io/address/${asset.vestingAddress}`}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="underline text-purple-700"
+                                                >
+                                                    {asset.vestingAddress}
+                                                </a>
+                                            </p>
+
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                                <input
+                                                    className="border p-2 rounded text-sm"
+                                                    placeholder="Beneficiario"
+                                                    value={vestingBeneficiary}
+                                                    onChange={(e) => setVestingBeneficiary(e.target.value)}
+                                                />
+                                                <input
+                                                    className="border p-2 rounded text-sm"
+                                                    placeholder="Monto (ej: 100)"
+                                                    value={vestingAmount}
+                                                    onChange={(e) => setVestingAmount(e.target.value)}
+                                                />
+                                                <input
+                                                    className="border p-2 rounded text-sm"
+                                                    placeholder="Start (timestamp UNIX)"
+                                                    value={vestingStart}
+                                                    onChange={(e) => setVestingStart(e.target.value)}
+                                                />
+                                                <input
+                                                    className="border p-2 rounded text-sm"
+                                                    placeholder="Cliff (segundos)"
+                                                    value={vestingCliff}
+                                                    onChange={(e) => setVestingCliff(e.target.value)}
+                                                />
+                                                <input
+                                                    className="border p-2 rounded text-sm"
+                                                    placeholder="Duración total (segundos)"
+                                                    value={vestingDuration}
+                                                    onChange={(e) => setVestingDuration(e.target.value)}
+                                                />
+
+                                                <button
+                                                    onClick={() =>
+                                                        handleCreateVesting(
+                                                            asset.vestingAddress,
+                                                            vestingBeneficiary,
+                                                            Number(vestingStart),
+                                                            Number(vestingCliff),
+                                                            Number(vestingDuration),
+                                                            vestingAmount
+                                                        )
+                                                    }
+                                                    className="px-3 py-1.5 rounded bg-purple-600 hover:bg-purple-700 text-white text-sm"
+                                                >
+                                                    Crear Vesting
+                                                </button>
+                                            </div>
+
+                                            <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-2">
+                                                <input
+                                                    className="border p-2 rounded text-sm"
+                                                    placeholder="ID Vesting"
+                                                    value={vestingId}
+                                                    onChange={(e) => setVestingId(e.target.value)}
+                                                />
+                                                <button
+                                                    onClick={() => handleRelease(asset.vestingAddress, Number(vestingId))}
+                                                    className="px-3 py-1 rounded bg-green-600 hover:bg-green-700 text-white text-sm"
+                                                >
+                                                    Liberar
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handleRevoke(asset.vestingAddress, vestingBeneficiary, Number(vestingId))
+                                                    }
+                                                    className="px-3 py-1 rounded bg-red-600 hover:bg-red-700 text-white text-sm"
+                                                >
+                                                    Revocar
+                                                </button>
+                                            </div>
                                         </div>
                                         {/* ==== Mint & Burn QUICK ACTIONS ==== */}
 
