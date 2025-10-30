@@ -1,1 +1,0 @@
-export const allowedUsers = ["JILM1979"];
