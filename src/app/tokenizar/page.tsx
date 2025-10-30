@@ -16,6 +16,7 @@ import TokenV2Abi from "@/abis/TokenV2.json";
 import VestingAbi from "@/abis/Vesting.json";
 import OwnerDocs from "@/app/components/OwnerDocs";
 import TokenizeDocs from "@/app/components/TokenizeDocs";
+import StakePoolAbi from "@/abis/StakePool.json";
 
 
 export default function TokenizarPage() {
@@ -79,6 +80,64 @@ export default function TokenizarPage() {
         isBurnable: boolean;
         stakingEnabled: boolean;
         owner: string;
+    };
+    const handleApproveStakingReward = async (
+        tokenAddress: string,
+        stakePoolAddress: string,
+        amount: string
+    ) => {
+        try {
+            await ensureSepolia();
+            if (!window.ethereum) throw new Error("No wallet detected");
+
+            const provider = new BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner();
+            const token = new ethers.Contract(tokenAddress, TokenV2Abi, signer);
+
+            const decimals = 18;
+            const value = parseUnits(amount, decimals);
+
+            const tx = await token.approve(stakePoolAddress, value);
+            await tx.wait();
+
+            alert("✅ Aprobación realizada correctamente");
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                alert("❌ Error: " + err.message);
+            } else {
+                console.error("Unknown error:", err);
+                alert("❌ Error desconocido al ejecutar la operación.");
+            }
+        }
+    };
+
+    const handleNotifyRewardAmount = async (
+        stakePoolAddress: string,
+        rewardAmount: string,
+        duration: string
+    ) => {
+        try {
+            await ensureSepolia();
+            if (!window.ethereum) throw new Error("No se encontró un proveedor Ethereum");
+            const provider = new BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner();
+            const stakePool = new ethers.Contract(stakePoolAddress, StakePoolAbi, signer);
+
+            const decimals = 18;
+            const reward = parseUnits(rewardAmount, decimals);
+            const dur = Number(duration);
+
+            const tx = await stakePool.notifyRewardAmount(reward, dur);
+            await tx.wait();
+            alert("✅ Recompensa configurada correctamente");
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                alert("❌ Error: " + err.message);
+            } else {
+                console.error("Unknown error:", err);
+                alert("❌ Error desconocido al ejecutar la operación.");
+            }
+        }
     };
     const handleCreateVesting = async (
         vestingAddress: string,
@@ -795,6 +854,100 @@ export default function TokenizarPage() {
                                                 <Link href={`/stake/${asset.stakePoolAddress}`} className="px-3 py-1.5 text-sm bg-gray-100 rounded-lg hover:bg-gray-200">Staking</Link>
                                             )}
                                         </div>
+
+
+                                        {asset.stakingEnabled && asset.stakePoolAddress && (
+
+
+                                            <div className="mt-3 bg-green-50 p-3 rounded-xl">
+                                                <div className="text-xs text-green-700 mb-2 font-semibold">
+                                                    ⚙️ Configuración de Recompensa del Staking (solo Owner)
+                                                </div>
+                                                <div className="mt-3 bg-yellow-50 p-3 rounded-xl">
+                                                    <div className="text-xs text-yellow-700 mb-2 font-semibold">
+                                                        ✅ Autorizar Recompensa para Staking (approve)
+                                                    </div>
+
+                                                    <p className="text-xs text-gray-600 mb-2">
+                                                        Debes aprobar antes de cargar la recompensa del staking.
+                                                    </p>
+
+                                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                                        <input
+                                                            type="text"
+                                                            className="border p-2 rounded text-sm"
+                                                            placeholder="Monto a aprobar (ej: 1000)"
+                                                            id={`approveAmount-${asset.tokenAddress}`}
+                                                        />
+
+                                                        <button
+                                                            className="px-3 py-1.5 rounded bg-yellow-600 hover:bg-yellow-700 text-white text-sm"
+                                                            onClick={() => {
+                                                                const value = (document.getElementById(
+                                                                    `approveAmount-${asset.tokenAddress}`
+                                                                ) as HTMLInputElement)?.value;
+
+                                                                handleApproveStakingReward(
+                                                                    asset.tokenAddress,
+                                                                    asset.stakePoolAddress!,
+                                                                    value
+                                                                );
+                                                            }}
+                                                        >
+                                                            Aprobar tokens
+                                                        </button>
+                                                    </div>
+
+                                                    <p className="text-xs text-gray-500 mt-2">
+                                                        Esto permite que el contracto de staking tome los tokens de recompensa desde tu wallet.
+                                                    </p>
+                                                </div>
+
+                                                <p className="text-xs text-gray-600 mb-2">
+                                                    Contrato StakePool:{" "}
+                                                    <a
+                                                        href={`https://sepolia.etherscan.io/address/${asset.stakePoolAddress}`}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                        className="underline text-green-700"
+                                                    >
+                                                        {asset.stakePoolAddress}
+                                                    </a>
+                                                </p>
+
+                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                                    <input
+                                                        type="text"
+                                                        className="border p-2 rounded text-sm"
+                                                        placeholder="Recompensa total (ej: 1000)"
+                                                        id={`rewardAmount-${asset.tokenAddress}`}
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        className="border p-2 rounded text-sm"
+                                                        placeholder="Duración (segundos)"
+                                                        id={`rewardDuration-${asset.tokenAddress}`}
+                                                    />
+                                                    <button
+                                                        className="px-3 py-1.5 rounded bg-green-600 hover:bg-green-700 text-white text-sm"
+                                                        onClick={() => {
+                                                            const reward = (document.getElementById(
+                                                                `rewardAmount-${asset.tokenAddress}`
+                                                            ) as HTMLInputElement)?.value;
+                                                            const dur = (document.getElementById(
+                                                                `rewardDuration-${asset.tokenAddress}`
+                                                            ) as HTMLInputElement)?.value;
+                                                            handleNotifyRewardAmount(asset.stakePoolAddress!, reward, dur);
+                                                        }}
+                                                    >
+                                                        Configurar Recompensa
+                                                    </button>
+                                                </div>
+                                                <p className="text-xs text-gray-500 mt-2">
+                                                    * Recuerda aprobar previamente al StakePool para transferir los tokens de recompensa.
+                                                </p>
+                                            </div>
+                                        )}
                                         {/* ==== Vesting Management ==== */}
                                         <div className="mt-4 bg-purple-50 p-3 rounded-xl">
                                             <div className="text-xs text-purple-700 mb-2 font-semibold">

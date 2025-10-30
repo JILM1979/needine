@@ -26,7 +26,67 @@ export default function OwnerDocs() {
             <li>Se listarán automáticamente todos los tokens que hayas desplegado desde el Factory.</li>
           </ol>
         </div>
+        {/* --- NUEVO: Staking Rewards Management --- */}
+        <div>
+          <h3 className="text-lg font-semibold text-green-700 mb-2">
+            💠 Bloque: “Staking — Gestión de Recompensas (solo Owner)”
+          </h3>
 
+          <p>
+            Si activaste la opción de <strong>staking</strong> al crear tu token, se despliega un
+            contrato <code>StakePool</code> vinculado al activo. Este bloque permite configurar
+            una campaña de recompensas para los usuarios que bloqueen (stakeen) tu token.
+          </p>
+
+          <h4 className="mt-3 font-medium text-gray-800">1️⃣ Aprobar tokens para el Staking (approve)</h4>
+          <p>
+            Antes de cargar recompensas, el owner debe <strong>autorizar</strong> al contrato
+            <code>StakePool</code> para mover los tokens de recompensa desde su wallet.
+          </p>
+
+          <ul className="list-disc ml-6 mt-2 space-y-1">
+            <li>Ingresa la cantidad de tokens que quieres destinar como recompensa.</li>
+            <li>El formulario ejecuta <code>token.approve(stakePool, amount)</code></li>
+            <li>Este paso otorga permiso al pool para retirar esa cantidad cuando inicie la campaña.</li>
+          </ul>
+
+          <p className="text-xs text-gray-500 mt-1">
+            ⚠️ Consejo: aprueba solo el monto necesario para evitar riesgos de exceso de allowance.
+          </p>
+
+          <h4 className="mt-4 font-medium text-gray-800">2️⃣ Configurar la campaña de recompensas</h4>
+          <p>
+            Después de aprobar los tokens, puedes iniciar la campaña ejecutando:
+            <code>notifyRewardAmount(reward, duration)</code>
+          </p>
+
+          <ul className="list-disc ml-6 mt-2 space-y-1">
+            <li><strong>Recompensa total:</strong> tokens totales que se distribuirán</li>
+            <li><strong>Duración (segundos):</strong> tiempo total durante el cual se repartirán</li>
+          </ul>
+
+          <p className="text-gray-700 mt-1">
+            Ejemplo: <code>1000 tokens — duración 30 días (~2,592,000 segundos)</code>
+          </p>
+
+          <p className="text-xs text-gray-500 mt-2">
+            Durante ese periodo, quienes hagan staking ganarán recompensas proporcionalmente.
+          </p>
+
+          <div className="mt-3 text-green-700 text-xs">
+            ✅ Resumen del flujo:
+            <ol className="list-decimal ml-6 space-y-1 mt-1">
+              <li>El owner aprueba tokens para recompensas</li>
+              <li>El owner inicia la campaña ingresando monto + duración</li>
+              <li>Los usuarios ya pueden hacer staking y ganar tokens</li>
+            </ol>
+          </div>
+
+          <p className="text-xs italic text-gray-500 mt-3">
+            🧠 Nota: El owner puede iniciar tantas campañas como desee (una tras otra).
+            Si inicia una nueva antes de terminar la anterior, los rewards remanentes se acumulan automáticamente.
+          </p>
+        </div>
         {/* --- NUEVO: Vesting Management --- */}
         <div>
           <h3 className="text-lg font-semibold text-purple-700 mb-2">
